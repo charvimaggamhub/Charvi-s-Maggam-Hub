@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About | Charvi's Maggam Hub</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html"><img src="assets/images/logo.png.png" alt="Logo"></a></div>
+  <ul id="nav-links"></ul>
+</nav>
+
+<section class="about-page">
+  <h1>About Us</h1>
+  <p id="about-text-display"></p>
+</section>
+
+<footer>
+  <p>© 2025 Charvi's Maggam Hub | Jeypore, India</p>
+</footer>
+
+<script>
+// Navigation menu
+const navLinks = document.getElementById('nav-links');
+const menu = JSON.parse(localStorage.getItem('navMenu')) || ["Home","Gallery","Services","About","Contact"];
+navLinks.innerHTML = '';
+menu.forEach(item=>{
+  const li=document.createElement('li');
+  const link=document.createElement('a');
+  link.href=item.toLowerCase()+".html"; link.innerText=item; li.appendChild(link);
+  navLinks.appendChild(li);
+});
+
+// About text
+document.getElementById('about-text-display').innerText = localStorage.getItem('aboutText') || "Charvi’s Maggam Hub is a premium studio blending traditional Indian embroidery with modern design.";
+</script>
+
+</body>
+</html>

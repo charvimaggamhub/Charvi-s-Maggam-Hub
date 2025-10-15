@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Charvi's Maggam Hub</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #5c0011, #d4af37);
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+    }
+
+    .login-container {
+      background: #fff8e1;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      width: 350px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Logo */
+    .login-container .logo img {
+      width: 180px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .login-container h2 {
+      color: #5c0011;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background-color: #d4af37;
+      border: none;
+      border-radius: 8px;
+      color: #5c0011;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+      font-size: 16px;
+    }
+
+    .login-container button:hover {
+      background-color: #ffd700;
+      color: #5c0011;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Responsive */
+    @media (max-width: 400px) {
+      .login-container {
+        width: 90%;
+        padding: 30px;
+      }
+      .login-container .logo img {
+        width: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <!-- Logo -->
+    <div class="logo">
+      <a href="../index.html">
+        <img src="..\assets\images\logo.png.png" >
+      </a>
+    </div>
+
+    <h2>Admin Login</h2>
+    <form action="dashboard.html" method="POST">
+      <input type="text" placeholder="Username" name="username" required>
+      <input type="password" placeholder="Password" name="password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+</body>
+</html>

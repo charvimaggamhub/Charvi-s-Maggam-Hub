@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gallery | Charvi's Maggam Hub</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+body { font-family: 'Poppins', sans-serif; background-color:#fff8e1; margin:0; }
+nav { display:flex; justify-content:space-between; align-items:center; padding:15px 30px; background:#5c0011; }
+nav .logo img { height:50px; }
+nav ul { list-style:none; display:flex; gap:20px; margin:0; padding:0; }
+nav ul li a { color:#fff; text-decoration:none; font-weight:500; }
+.hero { text-align:center; padding:50px 20px; color:#5c0011; }
+.gallery-container { display:flex; flex-wrap:wrap; gap:15px; padding:20px; justify-content:center; }
+.gallery-container img, .gallery-container video { width:250px; border-radius:12px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo"><a href="index.html"><img src="assets/images/logo.png.png" alt="Logo"></a></div>
+  <ul id="nav-links"></ul>
+</nav>
+
+<section class="hero">
+  <h1 id="hero-heading"></h1>
+  <p id="hero-slogan"></p>
+</section>
+
+<section class="gallery">
+  <h2 style="text-align:center; color:#5c0011;">Our Designs</h2>
+  <div class="gallery-container" id="gallery-container"></div>
+</section>
+
+<footer style="text-align:center; padding:15px; background:#5c0011; color:#fff;">
+  <p>© 2025 Charvi's Maggam Hub | Jeypore, India</p>
+</footer>
+
+<script>
+// Navigation menu
+const navLinks = document.getElementById('nav-links');
+const menu = JSON.parse(localStorage.getItem('navMenu')) || ["Home","Gallery","Services","About","Contact"];
+navLinks.innerHTML = '';
+menu.forEach(item=>{
+  const li=document.createElement('li');
+  const link=document.createElement('a');
+  link.href=item.toLowerCase()+".html"; link.innerText=item; li.appendChild(link);
+  navLinks.appendChild(li);
+});
+
+// Hero
+document.getElementById('hero-heading').innerText = localStorage.getItem('heroText') || "Welcome to Charvi's Maggam Hub";
+document.getElementById('hero-slogan').innerText = localStorage.getItem('siteSlogan') || "Spark your style with embroidery";
+
+// Gallery images
+const galleryContainer = document.getElementById('gallery-container');
+const galleryImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
+galleryImages.forEach(imgSrc=>{
+  const img = document.createElement('img');
+  img.src = imgSrc;
+  galleryContainer.appendChild(img);
+});
+
+// Gallery videos
+const galleryVideos = JSON.parse(localStorage.getItem('galleryVideos')) || [];
+galleryVideos.forEach(videoSrc=>{
+  const video = document.createElement('video');
+  video.src = videoSrc;
+  video.controls = true;
+  galleryContainer.appendChild(video);
+});
+</script>
+
+</body>
+</html>

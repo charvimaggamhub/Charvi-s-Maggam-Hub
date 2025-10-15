@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charvi's Maggam Hub</title>
+<link rel="stylesheet" href="assets/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+.hero h1 {
+  color: white;
+  font-size: 3rem;
+}
+.hero p {
+  color: white;
+  font-size: 1.2rem;
+}
+.hero {
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/images/hero-bg.jpg') no-repeat center center/cover;
+  text-align: center;
+  padding: 150px 20px;
+}
+.btn {
+  background-color: #d4af37;
+  color: #5c0011;
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav>
+  <div class="logo">
+    <a href="index.html"><img src="assets/images/logo.png.png" alt="Charvi's Maggam Hub Logo"></a>
+  </div>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="services.html">Services</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="admin/login.html">Admin</a></li>
+  </ul>
+  <div id="menu-btn">&#9776;</div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero">
+  <h1 id="hero-title">Welcome to Charvi's Maggam Hub</h1>
+  <p id="hero-slogan">Spark your style with embroidery</p>
+  <a href="gallery.html" class="btn">Explore Designs</a>
+</section>
+
+<script>
+// ===== Dynamic Slogan & Hero Text from Admin Panel =====
+const heroTitle = localStorage.getItem('heroText') || "Welcome to Charvi's Maggam Hub";
+const heroSlogan = localStorage.getItem('siteSlogan') || "Spark your style with embroidery";
+
+document.getElementById('hero-title').innerText = heroTitle;
+document.getElementById('hero-slogan').innerText = heroSlogan;
+
+// ===== Navbar Toggle =====
+const menuBtn = document.getElementById('menu-btn');
+const navLinks = document.querySelector('nav ul.nav-links');
+menuBtn.addEventListener('click', () => navLinks.classList.toggle('show'));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+/* -----------------------------------------
+   Charvi’s Maggam Hub - Luxury Royal Theme
+   ----------------------------------------- */
+
+:root {
+  --primary-color: #5c0011;     /* Deep Maroon */
+  --secondary-color: #d4af37;   /* Gold */
+  --accent-color: #fdf5e6;      /* Cream */
+  --dark-text: #2b1b0f;
+  --light-text: #5c4033;
+  --radius: 15px;
+  --shadow: rgba(0,0,0,0.2);
+}
+
+/* ------------------ Global Styles ------------------ */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--accent-color);
+  color: var(--dark-text);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+/* Links */
+a {
+  text-decoration: none;
+  color: var(--primary-color);
+}
+
+a:hover {
+  color: var(--secondary-color);
+}
+
+/* Sections */
+section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* ------------------ Navbar ------------------ */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--primary-color);
+  padding: 15px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 10px var(--shadow);
+}
+
+nav .logo img {
+  height: 60px;
+  width: auto;
+  border-radius: 8px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  margin-left: 25px;
+}
+
+nav ul li a {
+  font-weight: 500;
+  color: #fff;
+  transition: color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  color: var(--secondary-color);
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 5px;
+}
+
+/* ------------------ Hero Section ------------------ */
+/* Hero Section - Luxury Royal Theme */
+.hero {
+  background: linear-gradient(135deg, #5c0011, #d4af37);
+  color: white;
+  padding: 120px 20px;
+  text-align: center;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.3); /* subtle overlay for contrast */
+  z-index: 0;
+}
+
+.hero h1,
+.hero p,
+.hero .btn {
+  position: relative;
+  z-index: 1;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+  color: #ffffff; /* changed to white */
+  text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+}
+
+
+.hero .slogan {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ffd700; /* bright gold for emphasis */
+  margin: 10px 0 20px 0;
+  font-style: italic;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.hero .btn {
+  background-color: #d4af37;
+  color: #5c0011;
+  border: none;
+  padding: 14px 30px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero .btn:hover {
+  background-color: #ffd700; /* brighter gold on hover */
+  color: #5c0011;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+}
+
+
+/* ------------------ About Section ------------------ */
+#about {
+  max-width: 900px;
+  margin: 50px auto;
+  background-color: #fff8e1; /* Cream background */
+  padding: 50px 30px;
+  border-radius: var(--radius);
+  box-shadow: 0 8px 20px var(--shadow);
+  text-align: left;
+}
+
+#about h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+#about p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+  color: #5c4033;
+}
+
+#about img {
+  display: block;
+  margin: 30px auto 0 auto;
+  width: 80%;
+  max-width: 700px;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 15px var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+#about img:hover {
+  transform: scale(1.03);
+}
+
+/* ------------------ Why Choose Us Cards ------------------ */
+#why-choose {
+  margin-top: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+}
+
+#why-choose .service {
+  background: #fff3e0;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px var(--shadow);
+  padding: 25px;
+  max-width: 300px;
+  flex: 1 1 250px;
+  transition: transform 0.3s;
+}
+
+#why-choose .service:hover {
+  transform: translateY(-5px);
+}
+
+#why-choose .service h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+#why-choose .service p {
+  color: var(--dark-text);
+  font-size: 0.95rem;
+}
+
+/* ------------------ Footer ------------------ */
+footer {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+
+/* ------------------ Responsive ------------------ */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    background: var(--primary-color);
+    position: absolute;
+    top: 70px;
+    right: 0;
+    width: 100%;
+    display: none;
+  }
+
+  nav ul.show {
+    display: block;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  #why-choose {
+    flex-direction: column;
+    align-items: center;
+  }
+}

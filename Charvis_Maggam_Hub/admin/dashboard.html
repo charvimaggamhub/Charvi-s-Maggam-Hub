@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | Charvi's Maggam Hub</title>
+<link rel="stylesheet" href="../assets/style.css">
+<style>
+body { font-family: 'Poppins', sans-serif; background-color: #fff8e1; margin:0; }
+.sidebar { width:220px; background:#5c0011; height:100vh; position:fixed; color:#fff; padding-top:30px; }
+.sidebar h2 { text-align:center; margin-bottom:30px; color:#d4af37; }
+.sidebar a { display:block; padding:15px 20px; color:#fff; text-decoration:none; margin-bottom:5px; transition:0.3s; cursor:pointer; }
+.sidebar a:hover, .sidebar a.active { background:#d4af37; color:#5c0011; border-radius:8px; }
+.main-content { margin-left:220px; padding:30px; }
+.main-content h1 { color:#5c0011; margin-bottom:30px; }
+.section { display:none; background:#fff; padding:25px; border-radius:12px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }
+.section h2 { color:#5c0011; margin-bottom:12px; }
+.section textarea, .section input[type="text"], .section input[type="password"], .section input[type="color"] { width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-bottom:15px; font-size:1rem; }
+.section input[type="file"] { margin-bottom:12px; }
+.section button { background:#d4af37; color:#5c0011; padding:10px 20px; border:none; border-radius:8px; cursor:pointer; font-weight:600; margin-bottom:20px; }
+.section button:hover { background:#ffd700; transform:translateY(-2px); box-shadow:0 4px 10px rgba(0,0,0,0.2); }
+#image-preview img, #video-preview video { width:150px; margin:10px; border-radius:10px; display:block; }
+#menu-list li { margin-bottom:10px; }
+#menu-list button { margin-left:5px; padding:2px 5px; font-size:0.85rem; }
+#menu-list a { margin-left:10px; color:#5c0011; text-decoration:underline; }
+@media(max-width:768px){ .sidebar{ width:100%; height:auto; position:relative;} .main-content{ margin-left:0; } }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+<h2>Admin Panel</h2>
+<a class="active" onclick="openSection('dashboard')">Dashboard</a>
+<a onclick="openSection('manage')">Manage Content</a>
+<a onclick="openSection('settings')">Settings</a>
+<a href="login.html">Logout</a>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+
+<!-- Dashboard Section -->
+<div id="dashboard" class="section" style="display:block;">
+<h1>Dashboard</h1>
+<p>Welcome, Admin!Charvi's Maggam Hub.</p>
+</div>
+
+<!-- Manage Content Section -->
+<div id="manage" class="section">
+<h1>Manage Content</h1>
+
+<h2>Edit Hero Section</h2>
+<textarea id="hero-text" rows="3">Welcome to Charvi's Maggam Hub</textarea>
+<button onclick="saveHero()">Save Hero Text</button>
+
+<h2>Edit About Section</h2>
+<textarea id="about-text" rows="5">Current About Us text...</textarea>
+<button onclick="saveAbout()">Save About Text</button>
+
+<h2>Upload Images</h2>
+<input type="file" id="product-image" multiple accept="image/*">
+<button onclick="uploadProductImage()">Upload Images</button>
+<div id="image-preview"></div>
+
+<h2>Upload Videos</h2>
+<input type="file" id="video-upload" multiple accept="video/*">
+<button onclick="uploadVideo()">Upload Videos</button>
+<div id="video-preview"></div>
+
+<h2>Manage Navigation Menu</h2>
+<ul id="menu-list"></ul>
+<input type="text" id="new-menu-item" placeholder="New Menu Item Name">
+<button onclick="addMenuItem()">Add Menu Item</button>
+</div>
+
+<!-- Settings Section -->
+<div id="settings" class="section">
+<h1>Settings</h1>
+
+<h2>Change Admin Password</h2>
+<input type="password" id="new-password" placeholder="Enter new password">
+<button onclick="changePassword()">Save Password</button>
+
+<h2>Change Theme Colors</h2>
+<label>Background Color:</label>
+<input type="color" id="bg-color" value="#fff8e1"><br><br>
+<label>Primary Color:</label>
+<input type="color" id="primary-color" value="#5c0011"><br><br>
+<label>Secondary Color:</label>
+<input type="color" id="secondary-color" value="#d4af37"><br><br>
+<button onclick="saveThemeColors()">Save Theme</button>
+
+<h2>Site Slogan</h2>
+<input type="text" id="site-slogan" placeholder="Enter site slogan">
+<button onclick="saveSlogan()">Save Slogan</button>
+</div>
+
+</div>
+
+<script>
+// ===== Sidebar Navigation =====
+function openSection(sectionId){
+  const sections = document.querySelectorAll('.section');
+  sections.forEach(sec => sec.style.display = 'none');
+  document.getElementById(sectionId).style.display = 'block';
+
+  const links = document.querySelectorAll('.sidebar a');
+  links.forEach(link => link.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// ===== Hero Section =====
+function saveHero() {
+  const text = document.getElementById('hero-text').value;
+  localStorage.setItem('heroText', text);
+  alert('Hero text saved!');
+}
+
+// ===== About Section =====
+function saveAbout() {
+  const text = document.getElementById('about-text').value;
+  localStorage.setItem('aboutText', text);
+  alert('About section updated!');
+}
+
+// ===== Gallery Images =====
+function uploadProductImage() {
+  const files = document.getElementById('product-image').files;
+  const preview = document.getElementById('image-preview');
+  let galleryImages = JSON.parse(localStorage.getItem('galleryImages')) || [];
+
+  for(let i=0;i<files.length;i++){
+    const reader = new FileReader();
+    reader.onload = function(e){
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      preview.appendChild(img);
+      galleryImages.push(e.target.result);
+      localStorage.setItem('galleryImages', JSON.stringify(galleryImages));
+    }
+    reader.readAsDataURL(files[i]);
+  }
+}
+
+// ===== Gallery Videos =====
+function uploadVideo() {
+  const files = document.getElementById('video-upload').files;
+  const preview = document.getElementById('video-preview');
+  let galleryVideos = JSON.parse(localStorage.getItem('galleryVideos')) || [];
+
+  for(let i=0;i<files.length;i++){
+    const url = URL.createObjectURL(files[i]);
+    const video = document.createElement('video');
+    video.src = url;
+    video.controls = true;
+    preview.appendChild(video);
+    galleryVideos.push(url);
+    localStorage.setItem('galleryVideos', JSON.stringify(galleryVideos));
+  }
+}
+
+// ===== Admin Password =====
+function changePassword() {
+  const password = document.getElementById('new-password').value;
+  if(password.length < 4){ alert('Password must be at least 4 characters!'); return; }
+  localStorage.setItem('adminPassword', password);
+  alert('Admin password updated!');
+}
+
+// ===== Theme Colors =====
+function saveThemeColors() {
+  const bg = document.getElementById('bg-color').value;
+  const primary = document.getElementById('primary-color').value;
+  const secondary = document.getElementById('secondary-color').value;
+
+  localStorage.setItem('themeBg', bg);
+  localStorage.setItem('themePrimary', primary);
+  localStorage.setItem('themeSecondary', secondary);
+  alert('Theme colors saved!');
+  applyThemeColors();
+}
+
+function applyThemeColors() {
+  const bg = localStorage.getItem('themeBg') || '#fff8e1';
+  const primary = localStorage.getItem('themePrimary') || '#5c0011';
+  const secondary = localStorage.getItem('themeSecondary') || '#d4af37';
+
+  document.body.style.backgroundColor = bg;
+  document.querySelector('.sidebar').style.backgroundColor = primary;
+
+  const links = document.querySelectorAll('.sidebar a');
+  links.forEach(link => {
+    link.style.color = '#fff';
+    link.addEventListener('mouseover', () => link.style.backgroundColor = secondary);
+    link.addEventListener('mouseout', () => link.style.backgroundColor = 'transparent');
+  });
+}
+
+// ===== Site Slogan =====
+function saveSlogan() {
+  const slogan = document.getElementById('site-slogan').value;
+  localStorage.setItem('siteSlogan', slogan);
+  alert('Site slogan saved!');
+}
+
+
+// Initial render
+renderMenu();
+applyThemeColors();
+</script>
+</body>
+</html>
