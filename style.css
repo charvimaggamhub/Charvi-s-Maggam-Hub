@@ -38,12 +38,22 @@ body{
 
 /* HERO SECTION */
 .hero{
-  padding:100px 20px;
+  min-height: 85vh;   /* Makes banner tall */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   text-align:center;
+  padding:20px;
+  
   background:linear-gradient(#000000b3,#000000b3),url('banner.jpg');
   background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
   color:white;
 }
+
 
 .hero h1{
   font-size:42px;
