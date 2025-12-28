@@ -38,20 +38,19 @@ body{
 
 /* HERO SECTION */
 .hero{
-  min-height: 85vh;   /* Makes banner tall */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
+  min-height: 85vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
   text-align:center;
-  padding:20px;
-  
+  padding:40px 20px;
   background:linear-gradient(#000000b3,#000000b3),url('banner.jpg');
   background-size:cover;
   background-position:center;
-  background-repeat:no-repeat;
   color:white;
+}
+
 }
 
 
@@ -73,6 +72,16 @@ body{
   text-decoration:none;
   margin-top:10px;
 }
+
+.tagline{
+  font-size: 34px;
+  font-weight: 800;
+  margin-top: 80px;          /* Moves text a bit down */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+}
+
 
 /* SECTIONS */
 .sec{
