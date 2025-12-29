@@ -38,17 +38,25 @@ body{
 
 /* HERO SECTION */
 .hero{
-  min-height: 85vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:40px 20px;
-  background:linear-gradient(#000000b3,#000000b3),url('banner.jpg');
-  background-size:cover;
-  background-position:center;
-  color:white;
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 40px 20px;
+
+  background-image:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url('banner.jpg');
+
+  background-size: contain;        /* 🔥 KEY CHANGE */
+  background-position: center right; /* 🔥 SHOW FACE */
+  background-repeat: no-repeat;
+
+  background-color: #000; /* fills empty space if any */
+  color: white;
 }
 
 }
@@ -76,11 +84,12 @@ body{
 .tagline{
   font-size: 34px;
   font-weight: 800;
-  margin-top: 80px;          /* Moves text a bit down */
+  margin-top: 80px;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
+
 
 
 /* SECTIONS */
