@@ -39,6 +39,8 @@ body{
 /* HERO SECTION */
 .hero{
   min-height: 90vh;
+  width: 100%;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -51,11 +53,10 @@ body{
     linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
     url('banner.jpg');
 
-  background-size: contain;        /* 🔥 KEY CHANGE */
-  background-position: center right; /* 🔥 SHOW FACE */
+  background-size: cover;           /* 🔥 fills full screen */
+  background-position: right center;/* 🔥 keeps face visible */
   background-repeat: no-repeat;
 
-  background-color: #000; /* fills empty space if any */
   color: white;
 }
 
@@ -89,7 +90,6 @@ body{
   text-transform: uppercase;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
 }
-
 
 
 /* SECTIONS */
