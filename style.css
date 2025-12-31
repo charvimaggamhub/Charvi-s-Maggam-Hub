@@ -10,7 +10,7 @@ body{
   color:#333;
 }
 
-/* NAVBAR */
+/* ================= NAVBAR ================= */
 .navbar{
   display:flex;
   justify-content:space-between;
@@ -44,23 +44,33 @@ body{
   overflow: hidden;
 }
 
-/* Banner Image */
+/* Common banner image */
 .hero-img{
   width: 100%;
   height: 100%;
-  object-fit: cover;              /* fills screen */
-  object-position: right center;  /* keeps face visible on desktop */
 }
 
-/* Overlay Content */
+/* Desktop banner */
+.desktop-banner{
+  display: block;
+  object-fit: cover;
+  object-position: right center; /* keeps face visible */
+}
+
+/* Mobile banner hidden on desktop */
+.mobile-banner{
+  display: none;
+}
+
+/* Overlay content */
 .hero-content{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:rgba(0,0,0,0.35);
-  text-align:center;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.35);
+  text-align: center;
 }
 
 /* Button */
@@ -79,7 +89,7 @@ body{
   text-align:center;
 }
 
-/* SERVICE CARDS */
+/* ================= SERVICE CARDS ================= */
 .card{
   background:white;
   padding:18px;
@@ -89,7 +99,7 @@ body{
   box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* GALLERY */
+/* ================= GALLERY ================= */
 .gallery{
   display:flex;
   flex-wrap:wrap;
@@ -103,7 +113,7 @@ body{
   box-shadow:0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* CONTACT / FORMS */
+/* ================= CONTACT / FORMS ================= */
 .form{
   max-width:450px;
   margin:auto;
@@ -132,7 +142,7 @@ button{
   font-size:16px;
 }
 
-/* FOOTER */
+/* ================= FOOTER ================= */
 footer{
   background:#111;
   color:white;
@@ -141,18 +151,22 @@ footer{
   margin-top:40px;
 }
 
-/* ================= MOBILE ================= */
-@media(max-width:768px){
+/* ================= MOBILE VIEW ================= */
+@media (max-width: 768px){
+
   .hero{
-    height:80vh;
+    height: auto;                 /* allow full image height */
   }
 
-  .hero-img{
-    object-position:center top; /* better crop for mobile */
+  .desktop-banner{
+    display: none;
   }
 
-  .tagline{
-    font-size:24px;
+  .mobile-banner{
+    display: block;
+    height: auto;
+    object-fit: contain;          /* 🔥 FULL IMAGE ON MOBILE */
+    background: #000;
   }
 
   .gallery img{
