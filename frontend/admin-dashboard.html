@@ -1,0 +1,200 @@
+<h2>Admin Dashboard</h2>
+
+<h2>🖼️ Upload Gallery Image</h2>
+
+<input type="file" id="imageFile" accept="image/*">
+<button onclick="uploadImage()">Upload Image</button>
+
+<p id="uploadMsg" style="color:green;"></p>
+
+<hr>
+
+<!-- SEARCH -->
+<input
+  type="text"
+  id="searchInput"
+  placeholder="Search by Booking ID or Phone"
+  onkeyup="searchBookings()"
+  style="margin-bottom:10px;width:300px;padding:6px;"
+>
+
+<!-- BOOKINGS TABLE -->
+<table border="1" width="100%" id="bookingTable">
+  <thead>
+    <tr>
+      <th>Booking ID</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Service</th>
+      <th>Status</th>
+      <th>Update</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<script>
+const BACKEND_URL = "https://charvis-backend.onrender.com";
+let allBookings = [];
+
+// LOAD BOOKINGS
+function loadBookings() {
+  fetch(`${BACKEND_URL}/admin/bookings`, {
+    headers: {
+      "Authorization": localStorage.getItem("adminToken")
+    }
+  })
+    .then(res => res.json())
+    .then(data => {
+      allBookings = data;
+      renderTable(data);
+    })
+    .catch(err => console.error(err));
+}
+
+// RENDER TABLE
+function renderTable(data) {
+  const tbody = document.querySelector("#bookingTable tbody");
+  tbody.innerHTML = "";
+
+  data.forEach(b => {
+    tbody.innerHTML += `
+      <tr>
+        <td>${b.booking_id}</td>
+        <td>${b.name}</td>
+        <td>${b.phone}</td>
+        <td>${b.service}</td>
+        <td>
+          <select id="status-${b.booking_id}">
+            <option ${b.status === "Pending" ? "selected" : ""}>Pending</option>
+            <option ${b.status === "In Progress" ? "selected" : ""}>In Progress</option>
+            <option ${b.status === "Completed" ? "selected" : ""}>Completed</option>
+          </select>
+        </td>
+        <td>
+          <button onclick="updateStatus('${b.booking_id}')">Save</button>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+// UPDATE STATUS
+function updateStatus(bookingId) {
+  const status = document.getElementById(`status-${bookingId}`).value;
+
+  fetch(`${BACKEND_URL}/admin/update-status`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": localStorage.getItem("adminToken")
+    },
+    body: JSON.stringify({
+      booking_id: bookingId,
+      status: status
+    })
+  })
+  .then(res => res.json())
+  .then(() => alert("Status updated"))
+  .catch(err => console.error(err));
+}
+
+// SEARCH
+function searchBookings() {
+  const value = document.getElementById("searchInput").value.toLowerCase();
+
+  const filtered = allBookings.filter(b =>
+    b.booking_id.toLowerCase().includes(value) ||
+    b.phone.includes(value)
+  );
+
+  renderTable(filtered);
+}
+
+loadBookings();
+</script>
+
+<hr>
+
+<h3>Gallery Images</h3>
+<div id="adminGallery"></div>
+
+<script>
+function loadAdminGallery() {
+  fetch(`${BACKEND_URL}/gallery`)
+    .then(res => res.json())
+    .then(images => {
+      const g = document.getElementById("adminGallery");
+      g.innerHTML = "";
+
+      images.forEach(img => {
+        g.innerHTML += `
+          <div style="display:inline-block;margin:10px;">
+            <img src="${img.url}" width="120"><br>
+            <button onclick="deleteImage('${img.url}','${img.public_id}')">
+              Delete
+            </button>
+          </div>
+        `;
+      });
+    });
+}
+
+function deleteImage(url, publicId) {
+  fetch(`${BACKEND_URL}/admin/delete-image`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": localStorage.getItem("adminToken")
+    },
+    body: JSON.stringify({
+      url: url,
+      public_id: publicId
+    })
+  })
+  .then(res => res.json())
+  .then(() => {
+    alert("Image deleted");
+    loadAdminGallery();
+  });
+}
+
+loadAdminGallery();
+</script>
+
+<script>
+function uploadImage() {
+  const fileInput = document.getElementById("imageFile");
+  const msg = document.getElementById("uploadMsg");
+
+  if (!fileInput.files.length) {
+    alert("Please select an image");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("image", fileInput.files[0]);
+
+  fetch(`${BACKEND_URL}/admin/upload-image`, {
+    method: "POST",
+    headers: {
+      "Authorization": localStorage.getItem("adminToken")
+    },
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      msg.innerText = "✅ Image uploaded successfully";
+      fileInput.value = "";
+      loadAdminGallery();
+    } else {
+      alert("Upload failed");
+    }
+  })
+  .catch(() => {
+    alert("Server error while uploading image");
+  });
+}
+</script>
+

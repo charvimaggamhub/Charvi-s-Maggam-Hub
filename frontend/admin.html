@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Login | Charvi's Maggam Hub</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="../style.css">
+<meta name="theme-color" content="#b76e79">
+</head>
+
+<body class="admin-bg">
+
+<div class="admin-login-card">
+  <img src="../logo.png" class="admin-logo">
+  <h2>Admin Login</h2>
+
+  <input type="password" id="password" placeholder="Enter Admin Password">
+  <button onclick="login()">Login</button>
+
+  <p id="msg" style="color:red;"></p>
+</div>
+
+<script>
+const BACKEND_URL = "https://charvis-backend.onrender.com";
+
+function login() {
+  const password = document.getElementById("password").value;
+  const msg = document.getElementById("msg");
+
+  if (!password) {
+    msg.innerText = "Please enter password";
+    return;
+  }
+
+  fetch(`${BACKEND_URL}/admin/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ password: password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      // Save token for dashboard usage
+      localStorage.setItem("adminToken", data.token);
+
+      // Redirect to dashboard
+      window.location.href = "admin-dashboard.html";
+    } else {
+      msg.innerText = "Wrong password";
+    }
+  })
+  .catch(() => {
+    msg.innerText = "Server error";
+  });
+}
+</script>
+
+</body>
+</html>

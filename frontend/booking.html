@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Book Now | Charvi's Maggam Hub</title>
+
+<meta name="description" content="Book bridal maggam work and embroidery services at Charvi's Maggam Hub, Jeypore Odisha.">
+
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#b76e79">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<header class="navbar">
+  <img src="logo.png" class="nav-logo">
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="contact.html">Contact</a>
+    <a href="booking.html" class="active">Book Now</a>
+  </nav>
+</header>
+
+<!-- BOOKING FORM -->
+<section class="booking-wrapper">
+  <div class="booking-box">
+
+    <h2>Book Your Design</h2>
+    <p class="sub-text">We create elegance with every stitch ✨</p>
+
+    <!-- ✅ ONLY ONE SUBMIT POINT -->
+    <form id="bookingForm" onsubmit="submitBooking(); return false;">
+      <p id="loadingMsg" style="display:none;color:#b76e79;">
+  Booking in progress...
+</p>
+
+<div id="successBox" style="display:none;" class="success-box">
+  <h3>🎉 Booking Successful!</h3>
+  <p id="successText"></p>
+</div>
+
+
+      <div class="input-group">
+        <label>Your Name</label>
+        <input type="text" id="name" placeholder="Enter your name" required>
+      </div>
+
+      <div class="input-group">
+        <label>Phone Number</label>
+        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+      </div>
+
+      <div class="input-group">
+        <label>Select Service</label>
+        <select id="service" required>
+          <option value="">Choose a service</option>
+          <option>Bridal Maggam Work</option>
+          <option>Designer Blouse Embroidery</option>
+          <option>Saree / Dupatta Work</option>
+          <option>Kids Wear Embroidery</option>
+          <option>Custom Hand Embroidery</option>
+        </select>
+      </div>
+
+
+      <!-- ✅ SUBMIT BUTTON -->
+      <button type="submit">
+        Book Now
+      </button>
+
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  © 2025 Charvi's Maggam Hub | All Rights Reserved
+</footer>
+
+<!-- ✅ JS FILE LINKED AT BOTTOM -->
+<script src="js/booking.js"></script>
+
+</body>
+</html>

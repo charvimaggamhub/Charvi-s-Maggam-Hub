@@ -1,0 +1,495 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:Segoe UI, Arial, sans-serif;
+}
+
+/* ================= FORCE MOBILE VIEW ================= */
+body{
+  max-width:480px;          /* MOBILE ONLY */
+  margin:0 auto;            /* center on desktop */
+  background:#fafafa;
+  color:#333;
+}
+
+/* ================= NAVBAR ================= */
+/* ================= HAMBURGER MENU ================= */
+
+/* NAVBAR */
+.navbar{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:12px 20px;
+  background:#eae7e5;
+  color:rgb(23, 23, 23);
+}
+
+.nav-logo{
+  width:55px;
+  border-radius:50%;
+}
+
+
+/* ================= BRAND TEXT LOGO ================= */
+
+.brand-text{
+  display:flex;
+  flex-direction:column;     /* 🔥 stack vertically */
+  align-items:center;        /* center align */
+  line-height:1.1;
+}
+
+/* Charvi’s – top text */
+.brand-normal{
+  font-family: 'DM Serif Display', serif;
+  font-size:26px;
+  font-weight:600;
+  color:#2b2b2b;
+}
+
+/* Maggam Hub – bottom cursive */
+.brand-cursive{
+  font-family: "Brush Script MT", "Lucida Handwriting", cursive;
+  font-size:26px;
+  font-weight:700;
+  color:#b76e79;
+  letter-spacing:0.5px;
+  margin-top:2px;
+  text-shadow:1px 2px 6px rgba(183,110,121,0.35);
+}
+
+
+
+/* Toggle icon */
+.menu-toggle{
+  font-size:26px;
+  cursor:pointer;
+  user-select:none;
+}
+
+/* Menu */
+.nav-menu{
+  position:absolute;
+  top:60px;
+  right:15px;
+  background:rgb(12, 12, 12);
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(244, 242, 242, 0.2);
+  display:none;
+  flex-direction:column;
+  min-width:160px;
+  overflow:hidden;
+  z-index:999;
+}
+
+.nav-menu a{
+  padding:12px 18px;
+  text-decoration:none;
+  color:#f3efef;
+  font-weight:600;
+  border-bottom:1px solid #eee;
+}
+
+.nav-menu a:last-child{
+  border-bottom:none;
+}
+
+.nav-menu a:hover{
+  background:#f6f4f4;
+}
+
+/* Show menu */
+.nav-menu.show{
+  display:flex;
+}
+
+
+/* ================= HERO (MOBILE ONLY) ================= */
+.hero{
+  position:relative;
+}
+
+.hero-img{
+  width:100%;
+  height:auto;              /* FULL IMAGE */
+  object-fit:contain;       /* NO CROPPING */
+  display:block;
+}
+
+/* Book Now button bottom-center */
+.hero-content{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:25px;
+  display:flex;
+  justify-content:center;
+}
+
+/* Button */
+.btn{
+  background:#ff6f91;
+  color:white;
+  padding:12px 22px;
+  border-radius:30px;
+  text-decoration:none;
+  font-size:16px;
+  font-weight:600;
+  box-shadow:0 8px 18px rgba(255,111,145,0.4);
+}
+
+/* ================= SECTIONS ================= */
+.sec{
+  padding:30px 16px;
+  text-align:center;
+}
+
+/* ================= CARDS ================= */
+.card{
+  background:white;
+  padding:18px;
+  margin:12px auto;
+  border-radius:14px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.12);
+}
+
+/* ================= GALLERY ================= */
+.gallery{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.gallery img{
+  width:100%;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* ================= FORMS ================= */
+.form{
+  background:white;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.12);
+}
+
+.form input,
+.form textarea,
+.form select{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#111;
+  color:white;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+}
+
+/* ================= FOOTER ================= */
+/* ================= FOOTER WITH ICON LINKS ================= */
+
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+}
+
+.footer {
+  background: #f7e7ea;
+  color: #5a1a24;
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+}
+
+
+
+/* ================= BOOKING FORM ================= */
+.booking-wrapper{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:30px 16px;
+  background:linear-gradient(135deg,#ffe6f0,#fff0f6);
+}
+
+.booking-box{
+  background:#fff;
+  width:100%;
+  padding:30px;
+  border-radius:22px;
+  box-shadow:0 20px 45px rgba(0,0,0,0.18);
+  animation:fadeIn 0.8s ease;
+}
+
+.booking-box h2{
+  text-align:center;
+  color:#b0005c;
+  font-size:26px;
+  margin-bottom:6px;
+}
+
+.sub-text{
+  text-align:center;
+  color:#777;
+  margin-bottom:22px;
+  font-style:italic;
+}
+
+.input-group{
+  margin-bottom:14px;
+}
+
+.input-group label{
+  font-weight:600;
+  margin-bottom:6px;
+  display:block;
+}
+
+.input-group input,
+.input-group select{
+  width:100%;
+  padding:13px;
+  border-radius:14px;
+  border:1px solid #ccc;
+}
+
+.booking-box button{
+  margin-top:10px;
+  padding:14px;
+  border:none;
+  border-radius:30px;
+  background:linear-gradient(135deg,#ff2f92,#ff6fae);
+  color:white;
+  font-size:17px;
+  font-weight:700;
+}
+
+#status{
+  text-align:center;
+  margin-top:14px;
+  font-weight:600;
+  color:#0a8a3a;
+}
+
+/* Animation */
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+/* ================= ADMIN LOGIN ONLY ================= */
+.admin-bg{
+  min-height:100vh;
+  background:linear-gradient(135deg,#fbe3ec,#fff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.admin-login-card{
+  background:white;
+  padding:35px;
+  width:100%;
+  max-width:320px;
+  border-radius:22px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.2);
+}
+
+.admin-logo{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+  margin-bottom:15px;
+  box-shadow:
+    0 0 8px rgba(183,110,121,0.6),
+    0 0 16px rgba(244,182,194,0.6);
+}
+
+.admin-login-card input{
+  width:100%;
+  padding:12px;
+  margin:15px 0;
+  border-radius:14px;
+  border:1px solid #ccc;
+}
+
+.admin-login-card button{
+  width:100%;
+  padding:12px;
+  background:#b76e79;
+  color:white;
+  border:none;
+  border-radius:25px;
+  font-weight:700;
+}
+
+/* ================= HOME CONTACT SECTION ================= */
+
+.home-contact{
+  padding:30px 16px;
+  background:#fff;
+  text-align:center;
+  border-top:1px solid #eee;
+}
+
+.home-contact h3{
+  color:#b76e79;
+  margin-bottom:12px;
+  font-size:20px;
+}
+
+.home-contact p{
+  font-size:15px;
+  color:#333;
+  margin-bottom:10px;
+  line-height:1.6;
+}
+
+.home-contact a{
+  color:#b76e79;
+  text-decoration:none;
+  font-weight:600;
+}
+
+/* WhatsApp Button */
+.whatsapp-btn{
+  display:inline-block;
+  margin-top:12px;
+  padding:12px 22px;
+  background:#25D366;
+  color:white;
+  border-radius:30px;
+  font-weight:600;
+  box-shadow:0 8px 18px rgba(37,211,102,0.4);
+}
+
+/* ================= ADMIN DASHBOARD ================= */
+
+.admin-main{
+  padding:90px 16px 30px;
+}
+
+.admin-section{
+  margin-bottom:30px;
+}
+
+.admin-section h3{
+  margin-bottom:12px;
+  color:#b76e79;
+}
+
+.admin-header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  background:#1b2230;
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 16px;
+}
+
+.admin-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.admin-logo{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+}
+
+.admin-header button{
+  background:#b76e79;
+  border:none;
+  color:white;
+  padding:8px 14px;
+  border-radius:20px;
+}
+
+/* ================= ADMIN GALLERY ================= */
+
+.admin-gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.gallery-card{
+  background:white;
+  padding:10px;
+  border-radius:14px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.15);
+  text-align:center;
+}
+
+.gallery-card img{
+  width:100%;
+  border-radius:10px;
+  margin-bottom:6px;
+}
+
+.gallery-card p{
+  font-size:14px;
+  margin-bottom:6px;
+}
+
+.gallery-card button{
+  background:#b00020;
+  color:white;
+  border:none;
+  padding:6px 10px;
+  border-radius:10px;
+  font-size:14px;
+}
+
+
+/* ================= EMBROIDERY PATTERN BACKGROUND ================= */
+
+.embroidery-bg{
+  background-color:#fffafc;
+
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(183,110,121,0.15) 1px, transparent 0),
+    radial-gradient(circle at 6px 6px, rgba(183,110,121,0.08) 1px, transparent 0);
+
+  background-size:12px 12px;
+}
+
+.success-box {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f7e7ea;
+  border-radius: 10px;
+  color: #5a1a24;
+}
