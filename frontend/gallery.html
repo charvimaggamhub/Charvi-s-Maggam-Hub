@@ -76,47 +76,61 @@
   <h1>Charvi's Maggam Hub</h1>
 </header>
 
-<h2>Our Work Gallery</h2>
+<h2 style="text-align:center;">Our Work Gallery</h2>
 
-<p class="loading" id="loadingMsg">Loading images...</p>
+<div id="gallery" class="gallery-grid"></div>
 
-<div class="gallery" id="gallery"></div>
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox">
+  <span class="close-btn" onclick="closeLightbox()">×</span>
+  <img id="lightbox-img">
+</div>
+
+<script>
+const CLOUD_NAME = "dzlncwjiy";
+const FOLDER = "charvi_gallery";
+
+fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${FOLDER}.json`)
+  .then(res => res.json())
+  .then(data => {
+    const gallery = document.getElementById("gallery");
+    gallery.innerHTML = "";
+
+    data.resources.forEach(img => {
+      const imageUrl =
+        `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${img.public_id}.jpg`;
+
+      gallery.innerHTML += `
+        <div class="gallery-item">
+          <img src="${imageUrl}" onclick="openLightbox('${imageUrl}')">
+        </div>
+      `;
+    });
+  });
+
+// OPEN LIGHTBOX
+function openLightbox(src) {
+  document.getElementById("lightbox-img").src = src;
+  document.getElementById("lightbox").style.display = "flex";
+}
+
+// CLOSE LIGHTBOX
+function closeLightbox() {
+  document.getElementById("lightbox").style.display = "none";
+}
+
+// Close when clicking outside image
+document.getElementById("lightbox").addEventListener("click", function(e) {
+  if (e.target.id === "lightbox") {
+    closeLightbox();
+  }
+});
+</script>
+
 
 <footer>
   © 2025 Charvi's Maggam Hub
 </footer>
-
-<script>
-  const BACKEND_URL = "http://127.0.0.1:5000"; 
-  // 🔁 After deployment, change to:
-  // https://YOUR-BACKEND.onrender.com
-
-  fetch(`${BACKEND_URL}/gallery`)
-    .then(res => res.json())
-    .then(images => {
-      const gallery = document.getElementById("gallery");
-      const loading = document.getElementById("loadingMsg");
-
-      loading.style.display = "none";
-
-      if (images.length === 0) {
-        loading.innerText = "No images uploaded yet.";
-        loading.style.display = "block";
-        return;
-      }
-
-      images.forEach(img => {
-        const image = document.createElement("img");
-        image.src = img.url;
-        image.alt = "Maggam work";
-        gallery.appendChild(image);
-      });
-    })
-    .catch(() => {
-      document.getElementById("loadingMsg").innerText =
-        "Failed to load images. Try again later.";
-    });
-</script>
 
 </body>
 </html>

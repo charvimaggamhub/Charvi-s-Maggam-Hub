@@ -1,49 +1,34 @@
+function generateBookingId() {
+  return "CMH-" + Math.floor(10000 + Math.random() * 90000);
+}
+
 function submitBooking() {
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
   const service = document.getElementById("service").value;
+  const msg = document.getElementById("bookingMsg");
 
-  if (!name || !phone || !service) {
-    alert("Please fill all details");
-    return;
-  }
+  const bookingId = generateBookingId();
 
-  const button = document.querySelector("button[type='submit']");
-  const loading = document.getElementById("loadingMsg");
-  const successBox = document.getElementById("successBox");
-  const successText = document.getElementById("successText");
+  msg.innerText = "Submitting...";
+  msg.style.color = "orange";
 
-  // UI state
-  button.disabled = true;
-  button.innerText = "Booking...";
-  if (loading) loading.style.display = "block";
-  if (successBox) successBox.style.display = "none";
-
-  fetch("https://charvis-backend.onrender.com/booking", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, phone, service })
+  db.collection("bookings").add({
+    bookingId: bookingId,
+    name: name,
+    phone: phone,
+    service: service,
+    status: "Pending",
+    createdAt: new Date()
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      successText.innerHTML = `
-        Thank you <b>${name}</b><br>
-        Your booking ID is <b>${data.booking_id}</b>
-      `;
-      if (successBox) successBox.style.display = "block";
-
-      document.getElementById("bookingForm").reset();
-    } else {
-      alert("Booking failed. Try again.");
-    }
+  .then(() => {
+    msg.innerText = "✅ Booking successful! ID: " + bookingId;
+    msg.style.color = "green";
+    document.getElementById("bookingForm").reset();
   })
-  .catch(() => {
-    alert("Server error. Please try later.");
-  })
-  .finally(() => {
-    button.disabled = false;
-    button.innerText = "Book Now";
-    if (loading) loading.style.display = "none";
+  .catch((error) => {
+    console.error(error);
+    msg.innerText = "❌ Error saving booking";
+    msg.style.color = "red";
   });
 }

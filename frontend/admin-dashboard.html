@@ -1,200 +1,110 @@
-<h2>Admin Dashboard</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard | Charvi's Maggam Hub</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+</head>
 
-<h2>🖼️ Upload Gallery Image</h2>
+<body>
+  <!-- NAVBAR -->
+<header class="navbar">
+  <img src="logo.png" class="nav-logo">
+  <nav>
+    </nav>
+</header>
 
-<input type="file" id="imageFile" accept="image/*">
-<button onclick="uploadImage()">Upload Image</button>
+<div class="admin-layout">
 
-<p id="uploadMsg" style="color:green;"></p>
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h2>Charvi Admin</h2>
+    <ul>
+      <li onclick="showSection('bookingsSection')">📋 Bookings</li>
+      <li onclick="showSection('gallerySection')">🖼 Gallery</li>
+      <li onclick="adminLogout()">🚪 Logout</li>
+    </ul>
+  </div>
 
-<hr>
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
 
-<!-- SEARCH -->
-<input
-  type="text"
-  id="searchInput"
-  placeholder="Search by Booking ID or Phone"
-  onkeyup="searchBookings()"
-  style="margin-bottom:10px;width:300px;padding:6px;"
->
+    <!-- HEADER -->
+    <div class="top-header">
+      <h1>Dashboard</h1>
+    </div>
 
-<!-- BOOKINGS TABLE -->
-<table border="1" width="100%" id="bookingTable">
-  <thead>
-    <tr>
-      <th>Booking ID</th>
-      <th>Name</th>
-      <th>Phone</th>
-      <th>Service</th>
-      <th>Status</th>
-      <th>Update</th>
-    </tr>
-  </thead>
-  <tbody></tbody>
-</table>
+    <!-- ANALYTICS -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total</h3>
+        <p id="totalBookings">0</p>
+      </div>
 
-<script>
-const BACKEND_URL = "https://charvis-backend.onrender.com";
-let allBookings = [];
+      <div class="stat-card pending">
+        <h3>Pending</h3>
+        <p id="pendingBookings">0</p>
+      </div>
 
-// LOAD BOOKINGS
-function loadBookings() {
-  fetch(`${BACKEND_URL}/admin/bookings`, {
-    headers: {
-      "Authorization": localStorage.getItem("adminToken")
-    }
-  })
-    .then(res => res.json())
-    .then(data => {
-      allBookings = data;
-      renderTable(data);
-    })
-    .catch(err => console.error(err));
-}
+      <div class="stat-card progress">
+        <h3>In Progress</h3>
+        <p id="progressBookings">0</p>
+      </div>
 
-// RENDER TABLE
-function renderTable(data) {
-  const tbody = document.querySelector("#bookingTable tbody");
-  tbody.innerHTML = "";
+      <div class="stat-card completed">
+        <h3>Completed</h3>
+        <p id="completedBookings">0</p>
+      </div>
+    </div>
 
-  data.forEach(b => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${b.booking_id}</td>
-        <td>${b.name}</td>
-        <td>${b.phone}</td>
-        <td>${b.service}</td>
-        <td>
-          <select id="status-${b.booking_id}">
-            <option ${b.status === "Pending" ? "selected" : ""}>Pending</option>
-            <option ${b.status === "In Progress" ? "selected" : ""}>In Progress</option>
-            <option ${b.status === "Completed" ? "selected" : ""}>Completed</option>
-          </select>
-        </td>
-        <td>
-          <button onclick="updateStatus('${b.booking_id}')">Save</button>
-        </td>
-      </tr>
-    `;
-  });
-}
+    <!-- BOOKINGS SECTION -->
+    <div id="bookingsSection">
+      <h3>Bookings</h3>
 
-// UPDATE STATUS
-function updateStatus(bookingId) {
-  const status = document.getElementById(`status-${bookingId}`).value;
+      <table id="bookingTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Service</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-  fetch(`${BACKEND_URL}/admin/update-status`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": localStorage.getItem("adminToken")
-    },
-    body: JSON.stringify({
-      booking_id: bookingId,
-      status: status
-    })
-  })
-  .then(res => res.json())
-  .then(() => alert("Status updated"))
-  .catch(err => console.error(err));
-}
+    <!-- GALLERY SECTION -->
+    <div id="gallerySection" style="display:none;">
+      <h3>Upload Gallery Image</h3>
 
-// SEARCH
-function searchBookings() {
-  const value = document.getElementById("searchInput").value.toLowerCase();
+      <div class="upload-box" id="dropArea">
+        Drag & Drop Image Here
+        <input type="file" id="imageFile" hidden>
+      </div>
 
-  const filtered = allBookings.filter(b =>
-    b.booking_id.toLowerCase().includes(value) ||
-    b.phone.includes(value)
-  );
+      <div id="previewContainer"></div>
 
-  renderTable(filtered);
-}
+      <hr>
 
-loadBookings();
-</script>
+      <h3>Gallery</h3>
+      <div id="adminGallery" class="gallery-grid"></div>
+    </div>
 
-<hr>
+  </div>
 
-<h3>Gallery Images</h3>
-<div id="adminGallery"></div>
+</div>
 
-<script>
-function loadAdminGallery() {
-  fetch(`${BACKEND_URL}/gallery`)
-    .then(res => res.json())
-    .then(images => {
-      const g = document.getElementById("adminGallery");
-      g.innerHTML = "";
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-      images.forEach(img => {
-        g.innerHTML += `
-          <div style="display:inline-block;margin:10px;">
-            <img src="${img.url}" width="120"><br>
-            <button onclick="deleteImage('${img.url}','${img.public_id}')">
-              Delete
-            </button>
-          </div>
-        `;
-      });
-    });
-}
+<script src="admin.js"></script>
 
-function deleteImage(url, publicId) {
-  fetch(`${BACKEND_URL}/admin/delete-image`, {
-    method: "DELETE",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": localStorage.getItem("adminToken")
-    },
-    body: JSON.stringify({
-      url: url,
-      public_id: publicId
-    })
-  })
-  .then(res => res.json())
-  .then(() => {
-    alert("Image deleted");
-    loadAdminGallery();
-  });
-}
-
-loadAdminGallery();
-</script>
-
-<script>
-function uploadImage() {
-  const fileInput = document.getElementById("imageFile");
-  const msg = document.getElementById("uploadMsg");
-
-  if (!fileInput.files.length) {
-    alert("Please select an image");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("image", fileInput.files[0]);
-
-  fetch(`${BACKEND_URL}/admin/upload-image`, {
-    method: "POST",
-    headers: {
-      "Authorization": localStorage.getItem("adminToken")
-    },
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      msg.innerText = "✅ Image uploaded successfully";
-      fileInput.value = "";
-      loadAdminGallery();
-    } else {
-      alert("Upload failed");
-    }
-  })
-  .catch(() => {
-    alert("Server error while uploading image");
-  });
-}
-</script>
-
+</body>
+</html>
