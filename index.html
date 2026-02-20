@@ -16,6 +16,7 @@
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#b76e79">
 
+
 </head>
 
 <body>
@@ -37,9 +38,11 @@
   <!-- Menu Links -->
   <nav id="navMenu" class="nav-menu">
     <a href="index.html">Home</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="booking.html">Book Now</a>
-    <a href="contact.html">Contact</a>
+<a href="about.html">About</a>
+<a href="services.html" class="active">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="contact.html">Contact</a>
+<a href="admin.html">Admin</a>
   </nav>
 </header>
 
@@ -55,23 +58,33 @@
 </section>
 
 <!-- CONTACT DETAILS (HOME PAGE) -->
-<section class="home-contact">
-  <h3>Contact Us</h3>
+<section class="home-contact-section embroidery-bg">
 
-  <p>
-    📞 <strong>Phone:</strong>
-    <a href="tel:6372364419">6372364419</a>
-  </p>
+  <div class="contact-card">
 
-  <p>
-    📍 <strong>Address:</strong><br>
-    Dasarathi Street, Bell Road,<br>
-    Jeypore,Odisha 764001
-  </p>
+    <h3>📞 Contact Us</h3>
 
-  <a href="https://wa.me/916372364419" class="whatsapp-btn" target="_blank">
-    💬 Chat on WhatsApp
-  </a>
+    <div class="contact-item">
+      <span>📍</span>
+      <p>BellRoad,Jeypore,Odisha,India</p>
+    </div>
+
+    <div class="contact-item">
+      <span>📱</span>
+      <p><a href="tel:9556306160">+91 95563 06160</a></p>
+    </div>
+
+    <div class="contact-item">
+      <span>📧</span>
+      <p><a href="mailto:charvi.maggamhub@gmail.com">charvi.maggamhub@gmail.com</a></p>
+    </div>
+
+    <a href="https://wa.me/919556306160" class="whatsapp-btn" target="_blank">
+      💬 Chat on WhatsApp
+    </a>
+
+  </div>
+
 </section>
 
 <script>
@@ -104,6 +117,13 @@ function toggleMenu(){
     © 2026 Charvi’s Maggam Hub
   </p>
 </footer>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log("Service Worker Registered"));
+}
+</script>
 
 </body>
 </html>

@@ -1,138 +1,145 @@
-// ================= CLOUDINARY =================
-
-const CLOUD_NAME = "dzlncwjiy";   // 🔥 your real cloud name
-const UPLOAD_PRESET = "charvi_gallery";
-
 // ================= FIREBASE CONFIG =================
-
-// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyA6gthbmmbK_dZWt-bdpXEw986Lj94msz4",
   authDomain: "charvis-maggam-hub.firebaseapp.com",
   projectId: "charvis-maggam-hub",
-  storageBucket: "charvis-maggam-hub.firebasestorage.app",
-  messagingSenderId: "137089691820",
-  appId: "1:137089691820:web:fe35a99dd7dd231ca02f09D"
+  appId: "1:137089691820:web:fe35a99dd7dd231ca02f09"
 };
 
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
 const auth = firebase.auth();
 
-function adminLogin() {
-  const email = document.getElementById("adminEmail").value;
-  const password = document.getElementById("adminPassword").value;
-  const errorText = document.getElementById("loginError");
+// ================= APPS SCRIPT URL =================
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWxBh1-GTwNcFxKs_s-oAP0_vUa-MiCaaisIldGgpRl5-vZJpfcakh2iQj1WYyB2B7Vw/exec";
 
-  errorText.innerText = "Logging in...";
+// 🔐 Only this email can access admin
+const ADMIN_EMAIL = "admin@charvi.com";
 
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      window.location.href = "admin-dashboard.html";
-    })
-    .catch((error) => {
-      errorText.innerText = "Invalid Email or Password";
-    });
-}
+// ================= CLOUDINARY CONFIG =================
+const CLOUD_NAME = "dzlncwjiy";
+const UPLOAD_PRESET = "Charvi's Maggam Hub"; // ⚠ make sure this matches Cloudinary preset exactly
+
 
 
 // ================= LOGIN =================
+document.getElementById("loginBtn")?.addEventListener("click", function () {
 
-function adminLogin() {
-  const email = document.getElementById("adminEmail").value;
-  const password = document.getElementById("adminPassword").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const msg = document.getElementById("loginMsg");
 
   auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      // Redirect to dashboard
-      window.location.href = "admin-dashboard.html";
-    })
-    .catch(() => {
-      alert("Invalid login");
-    });
-}
+    .then(() => { if (msg) msg.innerText = ""; })
+    .catch(() => { if (msg) msg.innerText = "Login Failed ❌"; });
 
-// ================= LOGOUT =================
-
-function adminLogout() {
-  auth.signOut().then(() => {
-    location.reload();
-  });
-}
-
-// ================= CHECK AUTH =================
-
-auth.onAuthStateChanged((user) => {
-  const currentPage = window.location.pathname;
-
-  if (currentPage.includes("admin-dashboard") && !user) {
-    window.location.href = "admin-login.html";
-  }
-
-  if (currentPage.includes("admin-dashboard") && user) {
-    loadBookings();
-    loadGallery();
-  }
 });
 
+
+// ================= AUTH STATE =================
+auth.onAuthStateChanged(function (user) {
+
+  const loginSection = document.getElementById("loginSection");
+  const dashboardSection = document.getElementById("dashboardSection");
+
+  if (!loginSection || !dashboardSection) return;
+
+  if (user) {
+
+    if (user.email !== ADMIN_EMAIL) {
+      alert("Access Denied ❌");
+      auth.signOut();
+      return;
+    }
+
+    loginSection.style.display = "none";
+    dashboardSection.style.display = "block";
+
+    loadBookings();
+    loadGallery();
+
+  } else {
+    loginSection.style.display = "block";
+    dashboardSection.style.display = "none";
+  }
+
+});
+
+
 // ================= LOAD BOOKINGS =================
+function loadBookings(){
 
-function loadBookings() {
-  const tbody = document.querySelector("#bookingTable tbody");
+  fetch(SCRIPT_URL + "?action=getBookings")
+    .then(res => res.json())
+    .then(data => {
 
-  db.collection("bookings")
-    .orderBy("createdAt", "desc")
-    .onSnapshot((snapshot) => {
-      tbody.innerHTML = "";
+      const tableBody = document.querySelector("#bookingTable tbody");
+      tableBody.innerHTML = "";
 
-      snapshot.forEach((doc) => {
-        const data = doc.data();
+      let todayCount = 0;
+      const today = new Date().toDateString();
 
-        tbody.innerHTML += `
-          <tr>
-            <td>${data.bookingId || "-"}</td>
-            <td>${data.name}</td>
-            <td>${data.phone}</td>
-            <td>${data.service}</td>
-            <td>
-              <select onchange="updateStatus('${doc.id}', this.value)">
-                <option ${data.status === "Pending" ? "selected" : ""}>Pending</option>
-                <option ${data.status === "In Progress" ? "selected" : ""}>In Progress</option>
-                <option ${data.status === "Completed" ? "selected" : ""}>Completed</option>
-              </select>
-            </td>
-          </tr>
+      data.forEach((booking) => {
+
+        const bookingDate = new Date(booking.timestamp).toDateString();
+        if (bookingDate === today) todayCount++;
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+          <td>${booking.timestamp}</td>
+          <td>${booking.bookingId}</td>
+          <td>${booking.name}</td>
+          <td>${booking.phone}</td>
+          <td>${booking.service}</td>
+          <td>${booking.email}</td>
+          <td><button onclick="this.closest('tr').remove()">🗑</button></td>
         `;
+
+        tableBody.appendChild(row);
       });
-    });
+
+      document.getElementById("totalBookings").innerText = data.length;
+      document.getElementById("todayBookings").innerText = todayCount;
+
+    })
+    .catch(err => console.error("Booking Load Error:", err));
 }
 
-// ================= UPDATE STATUS =================
 
-function updateStatus(id, newStatus) {
-  db.collection("bookings").doc(id).update({
-    status: newStatus
+
+// ================= CLOUDINARY IMAGE UPLOAD =================
+const dropArea = document.getElementById("dropArea");
+const imageInput = document.getElementById("imageInput");
+
+if (dropArea && imageInput) {
+
+  dropArea.addEventListener("click", () => imageInput.click());
+
+  dropArea.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    dropArea.classList.add("dragover");
+  });
+
+  dropArea.addEventListener("dragleave", () => {
+    dropArea.classList.remove("dragover");
+  });
+
+  dropArea.addEventListener("drop", (e) => {
+    e.preventDefault();
+    dropArea.classList.remove("dragover");
+    uploadToCloudinary(e.dataTransfer.files[0]);
+  });
+
+  imageInput.addEventListener("change", () => {
+    uploadToCloudinary(imageInput.files[0]);
   });
 }
 
-// ================= UPLOAD IMAGE =================
 
-function uploadImage() {
+// ================= UPLOAD TO CLOUDINARY =================
+function uploadToCloudinary(file){
 
-  const user = firebase.auth().currentUser;
-
-  if (!user) {
-    alert("Unauthorized. Please login as admin.");
-    return;
-  }
-
-  const file = document.getElementById("imageFile").files[0];
-
-  if (!file) {
-    alert("Select an image");
-    return;
-  }
+  if(!file) return;
 
   const formData = new FormData();
   formData.append("file", file);
@@ -145,112 +152,103 @@ function uploadImage() {
   .then(res => res.json())
   .then(data => {
 
-    return db.collection("gallery").add({
-      imageUrl: data.secure_url,
-      publicId: data.public_id,
-      createdAt: new Date()
-    });
+    // Save image URL to Google Sheet
+    fetch(SCRIPT_URL, {
+      method:"POST",
+      body: JSON.stringify({
+        action:"saveImage",
+        url:data.secure_url
+      })
+    })
+    .then(()=> loadGallery());
 
   })
-  .then(() => {
-    alert("Image uploaded successfully");
-    document.getElementById("imageFile").value = "";
-    document.getElementById("previewContainer").innerHTML = "";
-    loadGallery();   // 🔥 auto refresh gallery
-  })
-  .catch(error => {
-    console.error(error);
-    alert("Upload failed");
-  });
+  .catch(err => console.error("Upload Error:", err));
 }
+
+
 
 // ================= LOAD GALLERY =================
+function loadGallery(){
 
-function loadGallery() {
-  const container = document.getElementById("adminGallery");
+  fetch(SCRIPT_URL + "?action=getImages")
+    .then(res => res.json())
+    .then(images => {
 
-  db.collection("gallery")
-    .orderBy("createdAt", "desc")
-    .onSnapshot(snapshot => {
-      container.innerHTML = "";
+      const gallery = document.getElementById("galleryContainer");
+      gallery.innerHTML = "";
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
+      if (!Array.isArray(images)) {
+        console.error("Invalid gallery response:", images);
+        return;
+      }
 
-        container.innerHTML += `
-          <div class="gallery-item">
-            <img src="${data.imageUrl}">
-            <button class="delete-btn"
-              onclick="deleteImage('${doc.id}')">
-              X
-            </button>
-          </div>
-        `;
+      images.forEach(url => {
+
+        if (typeof url !== "string") {
+          console.error("Invalid image URL:", url);
+          return;
+        }
+
+        const div = document.createElement("div");
+        div.className = "gallery-item";
+
+        const img = document.createElement("img");
+        img.src = url;
+
+        const btn = document.createElement("button");
+        btn.className = "delete-btn";
+        btn.innerText = "🗑";
+
+        btn.addEventListener("click", function(){
+          if(confirm("Delete image?")){
+            fetch(SCRIPT_URL,{
+              method:"POST",
+              body: JSON.stringify({
+                action:"deleteImage",
+                url:url
+              })
+            })
+            .then(()=> loadGallery());
+          }
+        });
+
+        div.appendChild(img);
+        div.appendChild(btn);
+        gallery.appendChild(div);
+
       });
-    });
+
+    })
+    .catch(err => console.error("Gallery Load Error:", err));
 }
 
-// ================= DELETE IMAGE =================
+// ================= SECTION SWITCH =================
+function showSection(sectionId, element){
 
-function deleteImage(docId) {
-  if (!confirm("Delete this image?")) return;
-
-  db.collection("gallery").doc(docId).delete()
-    .then(() => {
-      alert("Image deleted");
-    });
-}
-
-// ================= DRAG & DROP + PREVIEW =================
-
-document.addEventListener("DOMContentLoaded", function() {
-
-  const dropArea = document.getElementById("dropArea");
-  const fileInput = document.getElementById("imageFile");
-  const previewContainer = document.getElementById("previewContainer");
-
-  if (!dropArea || !fileInput) return;
-
-  dropArea.addEventListener("dragover", (e) => {
-    e.preventDefault();
-    dropArea.style.background = "#ffe6ea";
+  document.querySelectorAll(".admin-section").forEach(sec=>{
+    sec.style.display="none";
   });
 
-  dropArea.addEventListener("dragleave", () => {
-    dropArea.style.background = "";
+  document.querySelectorAll(".menu-item").forEach(item=>{
+    item.classList.remove("active");
   });
 
-  dropArea.addEventListener("drop", (e) => {
-    e.preventDefault();
-    dropArea.style.background = "";
-    fileInput.files = e.dataTransfer.files;
-    showPreview();
-  });
+  document.getElementById(sectionId).style.display="block";
 
-  fileInput.addEventListener("change", showPreview);
-
-  function showPreview() {
-    const file = fileInput.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      previewContainer.innerHTML = `
-        <h4>Preview:</h4>
-        <img src="${e.target.result}" width="200">
-        <br><br>
-        <button onclick="uploadImage()">Upload</button>
-      `;
-    };
-    reader.readAsDataURL(file);
+  if(element){
+    element.classList.add("active");
   }
+}
 
-});
 
+// ================= SEARCH =================
+function searchBooking(){
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const rows = document.querySelectorAll("#bookingTable tbody tr");
 
-function showSection(sectionId) {
-  document.getElementById("bookingsSection").style.display = "none";
-  document.getElementById("gallerySection").style.display = "none";
-
-  document.getElementById(sectionId).style.display = "block";
+  rows.forEach(row => {
+    const name = row.children[2].innerText.toLowerCase();
+    row.style.display = name.includes(input) ? "" : "none";
+  });
 }

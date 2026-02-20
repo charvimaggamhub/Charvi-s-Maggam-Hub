@@ -1,34 +1,59 @@
-function generateBookingId() {
-  return "CMH-" + Math.floor(10000 + Math.random() * 90000);
-}
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWxBh1-GTwNcFxKs_s-oAP0_vUa-MiCaaisIldGgpRl5-vZJpfcakh2iQj1WYyB2B7Vw/exec";
 
-function submitBooking() {
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const service = document.getElementById("service").value;
+document.getElementById("bookingForm")
+.addEventListener("submit", async function (e) {
+
+  e.preventDefault();
+
+  const loading = document.getElementById("loadingMsg");
+  const successBox = document.getElementById("successBox");
+  const successText = document.getElementById("successText");
   const msg = document.getElementById("bookingMsg");
 
-  const bookingId = generateBookingId();
+  loading.style.display = "block";
+  successBox.style.display = "none";
+  msg.innerText = "";
 
-  msg.innerText = "Submitting...";
-  msg.style.color = "orange";
+  const data = {
+    name: document.getElementById("name").value,
+    phone: document.getElementById("phone").value,
+    service: document.getElementById("service").value,
+    email: document.getElementById("email").value
+  };
 
-  db.collection("bookings").add({
-    bookingId: bookingId,
-    name: name,
-    phone: phone,
-    service: service,
-    status: "Pending",
-    createdAt: new Date()
-  })
-  .then(() => {
-    msg.innerText = "✅ Booking successful! ID: " + bookingId;
-    msg.style.color = "green";
+  try {
+
+    const response = await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",   // 🔥 Important to avoid CORS error
+      body: JSON.stringify(data)
+    });
+
+    // Since no-cors doesn’t allow reading response
+    loading.style.display = "none";
+    successBox.style.display = "block";
+    successText.innerText = "✅ Booking submitted successfully!";
     document.getElementById("bookingForm").reset();
-  })
-  .catch((error) => {
-    console.error(error);
-    msg.innerText = "❌ Error saving booking";
+
+  } catch (error) {
+
+    loading.style.display = "none";
+    msg.innerText = "❌ Server error. Try again.";
     msg.style.color = "red";
-  });
-}
+    console.error(error);
+
+  }
+
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const loginBtn = document.getElementById("loginBtn");
+
+  if (loginBtn) {
+    loginBtn.addEventListener("click", async () => {
+      // your login code
+    });
+  }
+
+});

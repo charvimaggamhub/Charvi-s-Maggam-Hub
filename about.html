@@ -14,13 +14,12 @@
 
 <header class="navbar">
 <img src="logo.png" class="nav-logo">
+ <div class="brand-text vertical">
+  <span class="brand-normal">Charvi’s</span>
+  <span class="brand-cursive">Maggam Hub</span>
+</div>
 <nav>
-<a href="index.html">Home</a>
 <a href="about.html" class="active">About</a>
-<a href="services.html">Services</a>
-<a href="gallery.html">Gallery</a>
-<a href="contact.html">Contact</a>
-<a href="admin.html">Admin</a>
 </nav>
 </header>
 
@@ -34,5 +33,13 @@ bridal blouses, saree embroidery, kids wear designs and custom designer work.
 </section>
 
 <footer>© 2026 Charvi's Maggam Hub</footer>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log("Service Worker Registered"));
+}
+</script>
+
 </body>
 </html>

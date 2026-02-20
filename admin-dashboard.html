@@ -37,46 +37,70 @@
       <h1>Dashboard</h1>
     </div>
 
-    <!-- ANALYTICS -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <h3>Total</h3>
-        <p id="totalBookings">0</p>
-      </div>
-
-      <div class="stat-card pending">
-        <h3>Pending</h3>
-        <p id="pendingBookings">0</p>
-      </div>
-
-      <div class="stat-card progress">
-        <h3>In Progress</h3>
-        <p id="progressBookings">0</p>
-      </div>
-
-      <div class="stat-card completed">
-        <h3>Completed</h3>
-        <p id="completedBookings">0</p>
-      </div>
-    </div>
 
     <!-- BOOKINGS SECTION -->
     <div id="bookingsSection">
       <h3>Bookings</h3>
 
-      <table id="bookingTable">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Service</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
+<table border="1" width="100%" id="bookingTable">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Booking ID</th>
+      <th>Name</th>
+      <th>Phone</th>
+      <th>Service</th>
+      <th>Message</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+
+<script>
+
+const SCRIPT_URL = "AKfycbzWxBh1-GTwNcFxKs_s-oAP0_vUa-MiCaaisIldGgpRl5-vZJpfcakh2iQj1WYyB2B7Vw";
+
+async function loadBookings() {
+
+  try {
+
+    const response = await fetch(SCRIPT_URL);
+    const data = await response.json();
+
+    const tableBody = document.querySelector("#bookingTable tbody");
+    tableBody.innerHTML = "";
+
+    data.forEach(booking => {
+
+      const row = `
+        <tr>
+          <td>${booking.timestamp}</td>
+          <td>${booking.bookingId}</td>
+          <td>${booking.name}</td>
+          <td>${booking.phone}</td>
+          <td>${booking.service}</td>
+          <td>${booking.message}</td>
+          <td>${booking.email}</td>
+        </tr>
+      `;
+
+      tableBody.innerHTML += row;
+
+    });
+
+  } catch (error) {
+    console.error("Error loading bookings:", error);
+  }
+
+}
+
+loadBookings();
+
+</script>
+
+
 
     <!-- GALLERY SECTION -->
     <div id="gallerySection" style="display:none;">
@@ -104,7 +128,13 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 
-<script src="admin.js"></script>
+<script type="module" src="admin.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('service-worker.js')
+    .then(() => console.log("Service Worker Registered"));
+}
+</script>
 
 </body>
 </html>
