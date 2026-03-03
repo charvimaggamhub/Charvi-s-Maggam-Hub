@@ -71,19 +71,13 @@ function loadBookings(){
   fetch(SCRIPT_URL + "?action=getBookings")
     .then(res => res.json())
     .then(data => {
-      console.log(data);
 
+      console.log(data); // keep this for debugging
 
       const tableBody = document.querySelector("#bookingTable tbody");
       tableBody.innerHTML = "";
 
-      let todayCount = 0;
-      const today = new Date().toDateString();
-
       data.forEach((booking) => {
-
-        const bookingDate = new Date(booking.timestamp).toDateString();
-        if (bookingDate === today) todayCount++;
 
         const row = document.createElement("tr");
 
@@ -94,19 +88,15 @@ function loadBookings(){
           <td>${booking.phone}</td>
           <td>${booking.service}</td>
           <td>${booking.email}</td>
-          <td><button onclick="this.closest('tr').remove()">🗑</button></td>
         `;
 
         tableBody.appendChild(row);
-      });
 
-      document.getElementById("totalBookings").innerText = data.length;
-      document.getElementById("todayBookings").innerText = todayCount;
+      });
 
     })
     .catch(err => console.error("Booking Load Error:", err));
 }
-
 
 
 // ================= CLOUDINARY IMAGE UPLOAD =================
