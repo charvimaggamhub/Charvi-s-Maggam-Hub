@@ -71,6 +71,8 @@ function loadBookings(){
   fetch(SCRIPT_URL + "?action=getBookings")
     .then(res => res.json())
     .then(data => {
+      console.log(data);
+
 
       const tableBody = document.querySelector("#bookingTable tbody");
       tableBody.innerHTML = "";
