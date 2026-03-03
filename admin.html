@@ -11,7 +11,7 @@
 
 </head>
 
-<body>
+<body class="admin-page">
 <!-- ================= LOGIN SECTION ================= -->
 <div id="loginSection" class="login-wrapper">
   <img src="logo.png" class="nav-logo">
@@ -50,8 +50,7 @@
           🖼 Gallery
         </div>
 
-        <div class="menu-item logout-btn" onclick="logout()">
-          🚪 Logout
+        <button id="logoutBtn"> 🚪Logout</button>
         </div>
       </div>
     </div>
@@ -105,8 +104,7 @@
           <input type="file" id="imageInput" hidden>
         </div>
 
-        <div class="gallery" id="galleryContainer"></div>
-      </div>
+        <div id="galleryContainer" class="gallery-grid"></div>
 
     </div>
   </div>

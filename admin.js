@@ -17,7 +17,7 @@ const ADMIN_EMAIL = "admin@charvi.com";
 
 // ================= CLOUDINARY CONFIG =================
 const CLOUD_NAME = "dzlncwjiy";
-const UPLOAD_PRESET = "Charvi's Maggam Hub"; // ⚠ make sure this matches Cloudinary preset exactly
+const UPLOAD_PRESET = "charvi_upload"; // ⚠ make sure this matches Cloudinary preset exactly
 
 
 
@@ -252,3 +252,9 @@ function searchBooking(){
     row.style.display = name.includes(input) ? "" : "none";
   });
 }
+
+
+// ================= LOGOUT =================
+document.getElementById("logoutBtn")?.addEventListener("click", function(){
+  auth.signOut();
+});

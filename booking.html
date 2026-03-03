@@ -98,7 +98,20 @@ if ('serviceWorker' in navigator) {
     .then(() => console.log("Service Worker Registered"));
 }
 </script>
+<!-- ================= SUCCESS POPUP ================= -->
 
+<div id="successPopup" class="popup-overlay">
+  <div class="popup-card">
+
+    <div class="checkmark">✔</div>
+
+    <h3>Booking Confirmed 🎉</h3>
+    <p id="popupBookingId"></p>
+
+    <button onclick="closePopup()">Done</button>
+
+  </div>
+</div>
 
 </body>
 </html>
