@@ -144,15 +144,28 @@ function uploadToCloudinary(file){
   .then(res => res.json())
   .then(data => {
 
-    // Save image URL to Google Sheet
-    fetch(SCRIPT_URL, {
-      method:"POST",
+    console.log("Cloudinary Upload Success:", data);
+
+    // 🔥 Save image URL to Google Sheet
+    return fetch(SCRIPT_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
-        action:"saveImage",
-        url:data.secure_url
+        action: "saveImage",
+        url: data.secure_url
       })
-    })
-    .then(()=> loadGallery());
+    });
+
+  })
+  .then(res => res.json())
+  .then(result => {
+
+    console.log("Saved to Sheet:", result);
+
+    // Reload gallery after saving
+    loadGallery();
 
   })
   .catch(err => console.error("Upload Error:", err));
