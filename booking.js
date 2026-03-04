@@ -1,4 +1,3 @@
-
 // ================= BOOKING FORM SUBMIT =================
 
 document.getElementById("bookingForm")
@@ -12,20 +11,39 @@ document.getElementById("bookingForm")
   if (loading) loading.style.display = "block";
   if (msg) msg.innerText = "";
 
-  // Generate booking ID
+  const name = document.getElementById("name")?.value.trim();
+  const phone = document.getElementById("phone")?.value.trim();
+  const service = document.getElementById("service")?.value.trim();
+  const email = document.getElementById("email")?.value.trim();
+
+  // Basic validation
+  if (!name || !phone || !service) {
+
+    if (loading) loading.style.display = "none";
+
+    if (msg) {
+      msg.innerText = "❌ Please fill all required fields.";
+      msg.style.color = "red";
+    }
+
+    return;
+  }
+
+  // Generate Booking ID
   const bookingId = "CMH-" + Date.now();
 
   const bookingData = {
     booking_id: bookingId,
-    name: document.getElementById("name").value,
-    phone: document.getElementById("phone").value,
-    service: document.getElementById("service").value,
-    email: document.getElementById("email").value
+    name: name,
+    phone: phone,
+    service: service,
+    email: email
   };
 
   try {
 
-    const { data, error } = await db
+    // Save booking to Supabase
+    const { error } = await db
       .from("bookings")
       .insert([bookingData]);
 
@@ -33,35 +51,38 @@ document.getElementById("bookingForm")
 
     if (error) {
 
-      console.error(error);
+      console.error("Supabase Error:", error);
 
       if (msg) {
-        msg.innerText = "❌ Booking failed.";
+        msg.innerText = "❌ Booking failed. Please try again.";
         msg.style.color = "red";
       }
 
       return;
     }
 
-    // 🎀 Show Animated Success Popup
-    document.getElementById("popupBookingId").innerText =
-      "Your Booking ID: " + bookingId;
+    // Show Success Popup
+    const popupId = document.getElementById("popupBookingId");
+    const popup = document.getElementById("successPopup");
 
-    document.getElementById("successPopup").classList.add("active");
+    if (popupId) popupId.innerText = "Your Booking ID: " + bookingId;
+
+    if (popup) popup.classList.add("active");
 
     // Reset form
     document.getElementById("bookingForm").reset();
 
-  } catch (error) {
+  } catch (err) {
 
     if (loading) loading.style.display = "none";
 
+    console.error("Server Error:", err);
+
     if (msg) {
-      msg.innerText = "❌ Server error. Try again.";
+      msg.innerText = "❌ Server error. Try again later.";
       msg.style.color = "red";
     }
 
-    console.error(error);
   }
 
 });
@@ -70,5 +91,11 @@ document.getElementById("bookingForm")
 // ================= CLOSE POPUP =================
 
 function closePopup() {
-  document.getElementById("successPopup").classList.remove("active");
+
+  const popup = document.getElementById("successPopup");
+
+  if (popup) {
+    popup.classList.remove("active");
+  }
+
 }
