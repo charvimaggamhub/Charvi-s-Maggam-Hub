@@ -49,6 +49,7 @@
         <div class="menu-item" onclick="showSection('gallerySection', this)">
           🖼 Gallery
         </div>
+        <button onclick="exportBookings()">Export Bookings</button>
 
         <button id="logoutBtn"> 🚪Logout</button>
         </div>
@@ -116,14 +117,20 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
 
 <!-- ================= ADMIN JS ================= -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 <script src="admin.js"></script>
-
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js')
     .then(() => console.log("Service Worker Registered"));
 }
 </script>
+
+
+<!-- FOOTER -->
+<footer>
+  © 2026 Charvi's Maggam Hub | All Rights Reserved
+</footer>
 
 </body>
 </html>

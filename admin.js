@@ -9,16 +9,24 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
-// ================= APPS SCRIPT URL =================
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzWxBh1-GTwNcFxKs_s-oAP0_vUa-MiCaaisIldGgpRl5-vZJpfcakh2iQj1WYyB2B7Vw/exec";
+
+// ================= SUPABASE CONFIG =================
+const SUPABASE_URL = "https://syciwtjfsvgggljorxbm.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5Y2l3dGpmc3ZnZ2dsam9yeGJtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2MDA3NzQsImV4cCI6MjA4ODE3Njc3NH0.QMx67QYQ-PDh3ZciJnu0PTCkUMhBMV2q57AGF5t2E3Q";
+
+const supabase = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
 
 // 🔐 Only this email can access admin
 const ADMIN_EMAIL = "admin@charvi.com";
 
+
 // ================= CLOUDINARY CONFIG =================
 const CLOUD_NAME = "dzlncwjiy";
-const UPLOAD_PRESET = "charvi_upload"; // ⚠ make sure this matches Cloudinary preset exactly
-
+const UPLOAD_PRESET = "charvi_upload";
 
 
 // ================= LOGIN =================
@@ -66,36 +74,71 @@ auth.onAuthStateChanged(function (user) {
 
 
 // ================= LOAD BOOKINGS =================
-function loadBookings(){
+async function loadBookings(){
 
-  fetch(SCRIPT_URL + "?action=getBookings")
-    .then(res => res.json())
-    .then(data => {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-      console.log(data); // keep this for debugging
+  if(error){
+    console.error(error);
+    return;
+  }
 
-      const tableBody = document.querySelector("#bookingTable tbody");
-      tableBody.innerHTML = "";
+  const tableBody = document.querySelector("#bookingTable tbody");
+  tableBody.innerHTML="";
 
-      data.forEach((booking) => {
+  let todayCount=0;
+  const today=new Date().toDateString();
 
-        const row = document.createElement("tr");
+  data.forEach(booking=>{
 
-        row.innerHTML = `
-          <td>${booking.timestamp}</td>
-          <td>${booking.bookingId}</td>
-          <td>${booking.name}</td>
-          <td>${booking.phone}</td>
-          <td>${booking.service}</td>
-          <td>${booking.email}</td>
-        `;
+    const bookingDate=new Date(booking.created_at).toDateString();
 
-        tableBody.appendChild(row);
+    if(bookingDate===today){
+      todayCount++;
+    }
 
-      });
+    const row=document.createElement("tr");
 
-    })
-    .catch(err => console.error("Booking Load Error:", err));
+    row.innerHTML=`
+      <td>${new Date(booking.created_at).toLocaleString()}</td>
+      <td>${booking.booking_id}</td>
+      <td>${booking.name}</td>
+      <td>${booking.phone}</td>
+      <td>${booking.service}</td>
+      <td>${booking.email}</td>
+      <td>
+        <button onclick="deleteBooking(${booking.id})">🗑</button>
+      </td>
+    `;
+
+    tableBody.appendChild(row);
+
+  });
+
+  document.getElementById("totalBookings").innerText=data.length;
+  document.getElementById("todayBookings").innerText=todayCount;
+
+}
+
+// ================= DELETE BOOKINGS =================
+async function deleteBooking(id){
+
+  if(!confirm("Delete this booking?")) return;
+
+  const { error } = await supabase
+    .from("bookings")
+    .delete()
+    .eq("id", id);
+
+  if(error){
+    console.error(error);
+    return;
+  }
+
+  loadBookings();
 }
 
 
@@ -125,6 +168,7 @@ if (dropArea && imageInput) {
   imageInput.addEventListener("change", () => {
     uploadToCloudinary(imageInput.files[0]);
   });
+
 }
 
 
@@ -142,91 +186,77 @@ function uploadToCloudinary(file){
     body: formData
   })
   .then(res => res.json())
-  .then(data => {
+  .then(async data => {
 
     console.log("Cloudinary Upload Success:", data);
 
-    // 🔥 Save image URL to Google Sheet
-    return fetch(SCRIPT_URL, {
-      method: "POST",
-      headers: {
-  "Content-Type": "text/plain;charset=utf-8"
-      },
-      body: JSON.stringify({
-        action: "saveImage",
-        url: data.secure_url
-      })
-    });
-
-  })
-  .then(res => res.json())
-  .then(result => {
-
-    console.log("Saved to Sheet:", result);
+    // 🔥 SAVE IMAGE URL TO SUPABASE
+    await supabase
+      .from('gallery')
+      .insert([{ image_url: data.secure_url }]);
 
     // Reload gallery after saving
     loadGallery();
 
   })
   .catch(err => console.error("Upload Error:", err));
+
 }
 
 
 
 // ================= LOAD GALLERY =================
-function loadGallery(){
+async function loadGallery(){
 
-  fetch(SCRIPT_URL + "?action=getImages")
-    .then(res => res.json())
-    .then(images => {
+  const { data, error } = await supabase
+    .from("gallery")
+    .select("*")
+    .order("created_at",{ascending:false});
 
-      const gallery = document.getElementById("galleryContainer");
-      gallery.innerHTML = "";
+  if(error){
+    console.error("Gallery Load Error:", error);
+    return;
+  }
 
-      if (!Array.isArray(images)) {
-        console.error("Invalid gallery response:", images);
-        return;
+  const gallery = document.getElementById("galleryContainer");
+  gallery.innerHTML = "";
+
+  data.forEach(img => {
+
+    const div = document.createElement("div");
+    div.className = "gallery-item";
+
+    const image = document.createElement("img");
+    image.src = img.image_url;
+
+    const btn = document.createElement("button");
+    btn.className = "delete-btn";
+    btn.innerText = "🗑";
+
+    btn.addEventListener("click", async function(){
+
+      if(confirm("Delete image?")){
+
+        await supabase
+          .from("gallery")
+          .delete()
+          .eq("id", img.id);
+
+        loadGallery();
+
       }
 
-      images.forEach(url => {
+    });
 
-        if (typeof url !== "string") {
-          console.error("Invalid image URL:", url);
-          return;
-        }
+    div.appendChild(image);
+    div.appendChild(btn);
+    gallery.appendChild(div);
 
-        const div = document.createElement("div");
-        div.className = "gallery-item";
+  });
+  document.getElementById("totalImages").innerText=data.length;
 
-        const img = document.createElement("img");
-        img.src = url;
-
-        const btn = document.createElement("button");
-        btn.className = "delete-btn";
-        btn.innerText = "🗑";
-
-        btn.addEventListener("click", function(){
-          if(confirm("Delete image?")){
-            fetch(SCRIPT_URL,{
-              method:"POST",
-              body: JSON.stringify({
-                action:"deleteImage",
-                url:url
-              })
-            })
-            .then(()=> loadGallery());
-          }
-        });
-
-        div.appendChild(img);
-        div.appendChild(btn);
-        gallery.appendChild(div);
-
-      });
-
-    })
-    .catch(err => console.error("Gallery Load Error:", err));
 }
+
 
 // ================= SECTION SWITCH =================
 function showSection(sectionId, element){
@@ -249,6 +279,7 @@ function showSection(sectionId, element){
 
 // ================= SEARCH =================
 function searchBooking(){
+
   const input = document.getElementById("searchInput").value.toLowerCase();
   const rows = document.querySelectorAll("#bookingTable tbody tr");
 
@@ -256,6 +287,30 @@ function searchBooking(){
     const name = row.children[2].innerText.toLowerCase();
     row.style.display = name.includes(input) ? "" : "none";
   });
+
+}
+
+
+async function exportBookings(){
+
+  const { data } = await supabase
+    .from("bookings")
+    .select("*");
+
+  let csv="Booking ID,Name,Phone,Service,Email\n";
+
+  data.forEach(b=>{
+    csv+=`${b.booking_id},${b.name},${b.phone},${b.service},${b.email}\n`;
+  });
+
+  const blob=new Blob([csv],{type:"text/csv"});
+  const url=window.URL.createObjectURL(blob);
+
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="bookings.csv";
+  a.click();
+
 }
 
 

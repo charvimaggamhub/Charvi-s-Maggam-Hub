@@ -642,3 +642,37 @@ body.admin-page {
   80% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
+
+/* ================= Statistics Card ================= */
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.stat-card{
+  background:white;
+  padding:20px;
+  border-radius:12px;
+  text-align:center;
+  box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+.stat-card h3{
+  font-size:28px;
+  margin-bottom:5px;
+}
+
+.stat-card.total{
+  background:#0f1011;
+}
+
+.stat-card.today{
+  background:#dbc60b;
+}
+
+.stat-card.gallery{
+  background:#0e0f0e;
+}
