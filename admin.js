@@ -248,8 +248,11 @@ async function loadGallery(){
 
   });
 
-  document.getElementById("totalImages").innerText=data.length;
+ const imgCount = document.getElementById("totalImages");
 
+if (imgCount) {
+  imgCount.innerText = data.length;
+}
 }
 
 
