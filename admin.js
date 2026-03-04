@@ -186,12 +186,21 @@ function uploadToCloudinary(file){
   .then(res => res.json())
   .then(async data => {
 
+    console.log("Cloudinary Response:", data);
+
+    const imageUrl = data.secure_url;
+
+    if(!imageUrl){
+      console.error("Image URL missing");
+      return;
+    }
+
     const { error } = await db
       .from("gallery")
-      .insert([{ image_url: data.secure_url }]);
+      .insert([{ image_url: imageUrl }]);
 
     if(error){
-      console.error("Gallery Save Error:", error);
+      console.error("Supabase Insert Error:", error);
       return;
     }
 
@@ -199,7 +208,6 @@ function uploadToCloudinary(file){
 
   })
   .catch(err => console.error("Upload Error:", err));
-
 }
 
 
