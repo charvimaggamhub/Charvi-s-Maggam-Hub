@@ -67,7 +67,7 @@ auth.onAuthStateChanged(function (user) {
 // ================= LOAD BOOKINGS =================
 async function loadBookings(){
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("bookings")
     .select("*")
     .order("created_at",{ascending:false});
@@ -119,7 +119,7 @@ async function deleteBooking(id){
 
   if(!confirm("Delete this booking?")) return;
 
-  const { error } = await supabase
+  const { error } = await db
     .from("bookings")
     .delete()
     .eq("id", id);
