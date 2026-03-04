@@ -10,8 +10,7 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 
 
-
-// 🔐 Only this email can access admin
+// ================= ADMIN EMAIL =================
 const ADMIN_EMAIL = "admin@charvi.com";
 
 
@@ -73,7 +72,7 @@ async function loadBookings(){
     .order("created_at",{ascending:false});
 
   if(error){
-    console.error(error);
+    console.error("Booking Load Error:", error);
     return;
   }
 
@@ -114,6 +113,7 @@ async function loadBookings(){
 
 }
 
+
 // ================= DELETE BOOKINGS =================
 async function deleteBooking(id){
 
@@ -125,11 +125,12 @@ async function deleteBooking(id){
     .eq("id", id);
 
   if(error){
-    console.error(error);
+    console.error("Delete Error:", error);
     return;
   }
 
   loadBookings();
+
 }
 
 
@@ -181,19 +182,21 @@ function uploadToCloudinary(file){
 
     console.log("Cloudinary Upload Success:", data);
 
-    // 🔥 SAVE IMAGE URL TO SUPABASE
-    await db
-      .from('gallery')
+    const { error } = await db
+      .from("gallery")
       .insert([{ image_url: data.secure_url }]);
 
-    // Reload gallery after saving
+    if(error){
+      console.error("Gallery Save Error:", error);
+      return;
+    }
+
     loadGallery();
 
   })
   .catch(err => console.error("Upload Error:", err));
 
 }
-
 
 
 // ================= LOAD GALLERY =================
@@ -244,27 +247,9 @@ async function loadGallery(){
     gallery.appendChild(div);
 
   });
+
   document.getElementById("totalImages").innerText=data.length;
 
-}
-
-
-// ================= SECTION SWITCH =================
-function showSection(sectionId, element){
-
-  document.querySelectorAll(".admin-section").forEach(sec=>{
-    sec.style.display="none";
-  });
-
-  document.querySelectorAll(".menu-item").forEach(item=>{
-    item.classList.remove("active");
-  });
-
-  document.getElementById(sectionId).style.display="block";
-
-  if(element){
-    element.classList.add("active");
-  }
 }
 
 
@@ -282,6 +267,7 @@ function searchBooking(){
 }
 
 
+// ================= EXPORT BOOKINGS =================
 async function exportBookings(){
 
   const { data } = await db
