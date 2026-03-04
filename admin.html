@@ -1,156 +1,188 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Panel | Charvi's Maggam Hub</title>
-  <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Panel | Charvi's Maggam Hub</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#b76e79">
 
 </head>
 
+
 <body class="admin-page">
-<!-- ================= LOGIN SECTION ================= -->
+
+
+<!-- ================= LOGIN ================= -->
 <div id="loginSection" class="login-wrapper">
-  <img src="logo.png" class="nav-logo">
-  <nav></nav>
-  <div class="login-card">
-    <h2>Admin Login</h2>
 
-    <input type="email" id="email" placeholder="Enter Email">
-    <input type="password" id="password" placeholder="Enter Password">
-    <button id="loginBtn">Login</button>
+<img src="logo.png" class="nav-logo">
 
-    <p id="loginMsg" class="error-text"></p>
-  </div>
+<div class="login-card">
+
+<h2>Admin Login</h2>
+
+<input type="email" id="email" placeholder="Enter Email">
+<input type="password" id="password" placeholder="Enter Password">
+
+<button id="loginBtn">Login</button>
+
+<p id="loginMsg" class="error-text"></p>
+
+</div>
 </div>
 
 
-<!-- ================= DASHBOARD SECTION ================= -->
+
+<!-- ================= DASHBOARD ================= -->
 <div id="dashboardSection" style="display:none;">
 
-  <div class="admin-layout">
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <h2 class="admin-title">CMH Admin</h2>
-
-      <div class="sidebar-menu">
-        <div class="menu-item active" onclick="showSection('overview', this)">
-          📊 Overview
-        </div>
-
-        <div class="menu-item" onclick="showSection('bookings', this)">
-          📅 Bookings
-        </div>
-
-        <div class="menu-item" onclick="showSection('gallerySection', this)">
-          🖼 Gallery
-        </div>
-        <button onclick="exportBookings()">Export Bookings</button>
-
-        <button id="logoutBtn"> 🚪Logout</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-
-      <!-- OVERVIEW -->
-      <div id="overview" class="admin-section">
-        <div class="stats-grid">
-          <div class="stat-card pink">
-            <h3>Total Bookings</h3>
-            <p id="totalBookings">0</p>
-          </div>
-
-          <div class="stat-card purple">
-            <h3>Today's Bookings</h3>
-            <p id="todayBookings">0</p>
-          </div>
-        </div>
-      </div>
+<div class="admin-layout">
 
 
-      <div class="stats">
+<!-- SIDEBAR -->
+<div class="sidebar">
 
-  <div class="stat-card">
-    <h3>Total Bookings</h3>
-    <p id="totalBookings">0</p>
-  </div>
+<h2 class="admin-title">CMH Admin</h2>
 
-  <div class="stat-card">
-    <h3>Today's Bookings</h3>
-    <p id="todayBookings">0</p>
-  </div>
+<div class="sidebar-menu">
 
-  <div class="stat-card">
-    <h3>Total Images</h3>
-    <p id="totalImages">0</p>
-  </div>
+<div class="menu-item active" onclick="showSection('overview', this)">
+📊 Overview
+</div>
+
+<div class="menu-item" onclick="showSection('bookings', this)">
+📅 Bookings
+</div>
+
+<div class="menu-item" onclick="showSection('gallerySection', this)">
+🖼 Gallery
+</div>
+
+<button onclick="exportBookings()">Export Bookings</button>
+
+<button id="logoutBtn">🚪 Logout</button>
 
 </div>
 
-      <!-- BOOKINGS -->
-      <div id="bookings" class="admin-section" style="display:none;">
-        <input type="text" id="searchInput"
-          placeholder="🔍 Search by name..."
-          onkeyup="searchBooking()">
-
-        <div class="table-container">
-          <table id="bookingTable">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Service</th>
-                <th>Email</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- GALLERY -->
-      <div id="gallerySection" class="admin-section" style="display:none;">
-        <div id="dropArea" class="drop-area">
-          <p>Drag & Drop Image Here or Click to Upload</p>
-          <input type="file" id="imageInput" hidden>
-        </div>
-
-        <div id="galleryContainer" class="gallery-grid"></div>
-
-    </div>
-  </div>
 </div>
 
-<!-- ================= FIREBASE COMPAT ================= -->
+
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+
+<!-- OVERVIEW -->
+<div id="overview" class="admin-section">
+
+<div class="stats-grid">
+
+<div class="stat-card pink">
+<h3>Total Bookings</h3>
+<p id="totalBookings">0</p>
+</div>
+
+<div class="stat-card purple">
+<h3>Today's Bookings</h3>
+<p id="todayBookings">0</p>
+</div>
+
+<div class="stat-card">
+<h3>Total Images</h3>
+<p id="totalImages">0</p>
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- BOOKINGS -->
+<div id="bookings" class="admin-section" style="display:none;">
+
+<input type="text"
+id="searchInput"
+placeholder="🔍 Search by name..."
+onkeyup="searchBooking()">
+
+<div class="table-container">
+
+<table id="bookingTable">
+
+<thead>
+<tr>
+<th>Date</th>
+<th>ID</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Service</th>
+<th>Email</th>
+<th>Delete</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+
+<!-- GALLERY -->
+<div id="gallerySection" class="admin-section" style="display:none;">
+
+<div id="dropArea" class="drop-area">
+
+<p>Drag & Drop Image Here or Click to Upload</p>
+
+<input type="file" id="imageInput" hidden>
+
+</div>
+
+<div id="galleryContainer" class="gallery-grid"></div>
+
+</div>
+
+
+</div>
+</div>
+</div>
+
+
+
+<!-- ================= FIREBASE ================= -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-storage-compat.js"></script>
+
 
 
 <script>
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log("Service Worker Registered"));
+navigator.serviceWorker.register('service-worker.js')
+.then(() => console.log("Service Worker Registered"));
 }
 </script>
 
 
-<!-- FOOTER -->
+
+<!-- ================= FOOTER ================= -->
 <footer>
-  © 2026 Charvi's Maggam Hub | All Rights Reserved
+© 2026 Charvi's Maggam Hub | All Rights Reserved
 </footer>
 
-<!-- ================= ADMIN JS ================= -->
+
+
+<!-- ================= SCRIPTS ================= -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="admin.js"></script>
