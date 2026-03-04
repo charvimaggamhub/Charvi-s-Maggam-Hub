@@ -36,7 +36,7 @@ document.getElementById("bookingForm")
 
   try {
 
-    const { data, error } = await supabase
+    const { data, error } = await db
       .from("bookings")
       .insert([bookingData]);
 

@@ -1,6 +1,6 @@
 async function loadGallery(){
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("gallery")
     .select("*")
     .order("created_at",{ascending:false});

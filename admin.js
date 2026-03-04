@@ -182,7 +182,7 @@ function uploadToCloudinary(file){
     console.log("Cloudinary Upload Success:", data);
 
     // 🔥 SAVE IMAGE URL TO SUPABASE
-    await supabase
+    await db
       .from('gallery')
       .insert([{ image_url: data.secure_url }]);
 
@@ -199,7 +199,7 @@ function uploadToCloudinary(file){
 // ================= LOAD GALLERY =================
 async function loadGallery(){
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("gallery")
     .select("*")
     .order("created_at",{ascending:false});
@@ -228,7 +228,7 @@ async function loadGallery(){
 
       if(confirm("Delete image?")){
 
-        await supabase
+        await db
           .from("gallery")
           .delete()
           .eq("id", img.id);
@@ -284,7 +284,7 @@ function searchBooking(){
 
 async function exportBookings(){
 
-  const { data } = await supabase
+  const { data } = await db
     .from("bookings")
     .select("*");
 
