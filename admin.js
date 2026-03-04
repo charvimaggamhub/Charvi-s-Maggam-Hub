@@ -77,6 +77,9 @@ async function loadBookings(){
   }
 
   const tableBody = document.querySelector("#bookingTable tbody");
+
+  if(!tableBody) return;
+
   tableBody.innerHTML="";
 
   let todayCount=0;
@@ -108,8 +111,11 @@ async function loadBookings(){
 
   });
 
-  document.getElementById("totalBookings").innerText=data.length;
-  document.getElementById("todayBookings").innerText=todayCount;
+  const total = document.getElementById("totalBookings");
+  const todayEl = document.getElementById("todayBookings");
+
+  if(total) total.innerText=data.length;
+  if(todayEl) todayEl.innerText=todayCount;
 
 }
 
@@ -180,8 +186,6 @@ function uploadToCloudinary(file){
   .then(res => res.json())
   .then(async data => {
 
-    console.log("Cloudinary Upload Success:", data);
-
     const { error } = await db
       .from("gallery")
       .insert([{ image_url: data.secure_url }]);
@@ -213,6 +217,9 @@ async function loadGallery(){
   }
 
   const gallery = document.getElementById("galleryContainer");
+
+  if(!gallery) return;
+
   gallery.innerHTML = "";
 
   data.forEach(img => {
@@ -248,11 +255,31 @@ async function loadGallery(){
 
   });
 
- const imgCount = document.getElementById("totalImages");
+  const imgCount = document.getElementById("totalImages");
+  if(imgCount) imgCount.innerText=data.length;
 
-if (imgCount) {
-  imgCount.innerText = data.length;
 }
+
+
+// ================= SECTION SWITCH =================
+window.showSection = function(sectionId, element){
+
+  document.querySelectorAll(".admin-section").forEach(sec=>{
+    sec.style.display="none";
+  });
+
+  document.querySelectorAll(".menu-item").forEach(item=>{
+    item.classList.remove("active");
+  });
+
+  const section=document.getElementById(sectionId);
+
+  if(section) section.style.display="block";
+
+  if(element){
+    element.classList.add("active");
+  }
+
 }
 
 
