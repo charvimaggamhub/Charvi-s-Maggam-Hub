@@ -1,7 +1,7 @@
 {
   "name": "Charvi's Maggam Hub",
   "short_name": "Charvi's",
-  "start_url": "index.html",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#fafafa",
   "theme_color": "#b76e79",

@@ -19,20 +19,54 @@
   <span class="brand-cursive">Maggam Hub</span>
 </div>
 <nav>
-<a href="about.html" class="active">About</a>
+<!-- Toggle Icon -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <!-- Menu Links -->
+  <nav id="navMenu" class="nav-menu">
+    <a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html" class="active">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="contact.html">Contact</a>
+<a href="booking.html">Book Now</a>
+<a href="admin.html">Admin</a>
+
 </nav>
 </header>
 
-<section class="sec">
-<h2>About Us</h2>
-<p>
-Charvi's Maggam Hub is dedicated to delivering premium hand embroidery and 
-maggam work designs with elegance, durability and perfection. We specialize in 
-bridal blouses, saree embroidery, kids wear designs and custom designer work.
-</p>
-</section>
+<section class="about">
+    <h2>About Us</h2>
 
-<footer>© 2026 Charvi's Maggam Hub</footer>
+    <p class="tagline">✨ Crafting Elegance with Every Stitch</p>
+
+    <p>
+        <strong>Charvi's Maggam Hub</strong> specializes in computerized machine embroidery
+        and traditional maggam work designs. We create beautiful and detailed
+        embroidery for blouses, sarees, lehengas, and designer outfits,
+        combining modern technology with traditional craftsmanship.
+    </p>
+
+    <p>
+        Our goal is to provide high-quality embroidery with perfect finishing
+        and creative designs that enhance the beauty of every outfit.
+        Whether it is bridal wear, festive clothing, or custom embroidery,
+        we carefully design each piece to match our customers’ style
+        and expectations.
+    </p>
+
+    <p>
+        At Charvi's Maggam Hub, we focus on precision, creativity, and
+        customer satisfaction, ensuring every design reflects elegance
+        and uniqueness.
+    </p>
+
+    <p>
+        Located in <strong>Jeypore, Koraput</strong>, we proudly serve customers
+        looking for professional embroidery work with both traditional
+        and modern touch.
+    </p>
+</section>
 
 <script>
 if ('serviceWorker' in navigator) {
@@ -40,6 +74,16 @@ if ('serviceWorker' in navigator) {
     .then(() => console.log("Service Worker Registered"));
 }
 </script>
+<script>
+function toggleMenu(){
+  document.getElementById("navMenu").classList.toggle("show");
+}
+</script>
+<footer class="footer">
+  <p class="footer-copy">
+    © 2026 Charvi’s Maggam Hub
+  </p>
+</footer>
 
 </body>
 </html>

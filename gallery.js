@@ -3,17 +3,29 @@ async function loadGallery(){
   const { data, error } = await db
     .from("gallery")
     .select("*")
-    .order("created_at",{ascending:false});
+    .order("created_at", { ascending: false });
 
-  const gallery = document.getElementById("gallery");
+  if(error){
+    console.error("Gallery Load Error:", error);
+    return;
+  }
+
+  const gallery = document.getElementById("galleryContainer");
+
+  if(!gallery){
+    console.error("galleryContainer not found");
+    return;
+  }
 
   gallery.innerHTML = "";
 
   data.forEach(img => {
 
-    gallery.innerHTML += `
-      <img src="${img.image_url}">
-    `;
+    const image = document.createElement("img");
+    image.src = img.image_url;
+    image.className = "gallery-img";
+
+    gallery.appendChild(image);
 
   });
 

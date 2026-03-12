@@ -25,8 +25,21 @@
   <span class="brand-cursive">Maggam Hub</span>
 </div>
   <nav>
-    <a href="booking.html" class="active">Book Now</a>
-  </nav>
+
+    <!-- Toggle Icon -->
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+
+  <!-- Menu Links -->
+  <nav id="navMenu" class="nav-menu">
+    <a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="services.html" class="active">Services</a>
+<a href="gallery.html">Gallery</a>
+<a href="contact.html">Contact</a>
+<a href="booking.html">Book Now</a>
+<a href="admin.html">Admin</a>
+
+</nav>
 </header>
 
 <!-- BOOKING FORM -->
@@ -84,12 +97,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
-<footer>
-  © 2026 Charvi's Maggam Hub | All Rights Reserved
-</footer>
-
-
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('service-worker.js')
@@ -115,5 +122,16 @@ if ('serviceWorker' in navigator) {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="booking.js"></script>
+<script>
+function toggleMenu(){
+  document.getElementById("navMenu").classList.toggle("show");
+}
+</script>
+<!-- FOOTER -->
+<footer class="footer">
+  <p class="footer-copy">
+    © 2026 Charvi’s Maggam Hub
+  </p>
+</footer>
 </body>
 </html>
